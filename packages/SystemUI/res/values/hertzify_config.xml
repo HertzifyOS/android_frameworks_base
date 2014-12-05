@@ -77,4 +77,7 @@
 
     <!-- Default for LineageSettings.Secure.QS_SHOW_BRIGHTNESS_SLIDER -->
     <bool name="def_qs_show_brightness_slider">true</bool>
+
+    <!-- Notification counter -->
+    <integer name="status_bar_notification_info_maxnum">999</integer>
 </resources>
