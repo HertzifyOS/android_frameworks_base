@@ -185,4 +185,7 @@
     <string name="battery_info_notif_screen_off">Screen off <xliff:g id="duration" example="5h 5m 14s">%1$s</xliff:g>  ·  <xliff:g id="pct" example="20%">%2$s</xliff:g> (<xliff:g id="mah" example="1133 mAh">%3$s</xliff:g>)</string>
     <string name="battery_info_notif_deep_sleep">Deep sleep <xliff:g id="duration" example="4h 0m 43s">%1$s</xliff:g>  ·  <xliff:g id="pct" example="78%">%2$s</xliff:g></string>
     <string name="battery_info_notif_awake">Awake <xliff:g id="duration" example="1h 4m 31s">%1$s</xliff:g>  ·  <xliff:g id="pct" example="21%">%2$s</xliff:g></string>
+
+    <!-- Notification counter -->
+    <string name="status_bar_notification_info_overflow" translatable="false">\u221E</string>
 </resources>
