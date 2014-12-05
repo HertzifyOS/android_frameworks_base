@@ -76,4 +76,7 @@
          1  = kernel uses Android convention (positive = charging).
          -1 = kernel inverts the sign (positive = discharging). -->
     <integer name="config_batteryCurrentNowSign" translatable="false">1</integer>
+
+    <!-- Notification counter -->
+    <integer name="status_bar_notification_info_maxnum">999</integer>
 </resources>
