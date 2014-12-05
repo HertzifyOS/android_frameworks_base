@@ -82,7 +82,7 @@
     <string name="smartspace_flight_qr_code">QR code</string>
     <string name="smartspace_icu_date_pattern">EEEMMMd</string>
     <string name="smartspace_role_desc">View</string>
-    
+
     <!-- Advanced restart menu -->
     <!-- Button to indicate more options -->
     <string name="global_action_restart_more">More</string>
@@ -177,4 +177,7 @@
 
     <!-- 5G toggle in Internet Dialog -->
     <string name="enable_fiveg">Enable 5G</string>
+
+    <!-- Notification counter -->
+    <string name="status_bar_notification_info_overflow" translatable="false">\u221E</string>
 </resources>
