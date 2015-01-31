@@ -617,6 +617,7 @@ android_library {
         "dagger.useBindingGraphFix=ENABLED",
     ],
     manifest: "AndroidManifest.xml",
+    additional_manifests: ["HertzifyManifest.xml"],
 }
 
 java_library {
