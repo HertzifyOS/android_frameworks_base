@@ -60,4 +60,7 @@
     <!-- Names of the key handler classes -->
     <string-array name="config_deviceKeyHandlerClasses" translatable="false">
     </string-array>
+
+    <!-- Lockscreen rotation default -->
+    <bool name="config_lockScreenRotationEnabledByDefault">false</bool>
 </resources>
