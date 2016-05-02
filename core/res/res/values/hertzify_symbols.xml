@@ -37,4 +37,7 @@
     <!-- Device keyhandlers -->
     <java-symbol type="array" name="config_deviceKeyHandlerLibs" />
     <java-symbol type="array" name="config_deviceKeyHandlerClasses" />
+
+    <!-- Lockscreen rotation default -->
+    <java-symbol type="bool" name="config_lockScreenRotationEnabledByDefault" />
 </resources>
