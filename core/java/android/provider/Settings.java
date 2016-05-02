@@ -6164,6 +6164,14 @@ public final class Settings {
                 "hide_rotation_lock_toggle_for_accessibility";
 
         /**
+          * Whether keyguard will rotate
+          * 0 = false, 1 = true
+           * @hide
+          */
+         @SuppressLint("NoSettingsProvider")
+         public static final String LOCKSCREEN_ROTATION = "lockscreen_rotation";
+
+        /**
          * Whether the phone vibrates when it is ringing due to an incoming call. This will
          * be used by Phone and Setting apps; it shouldn't affect other apps.
          * The value is boolean (1 or 0).
