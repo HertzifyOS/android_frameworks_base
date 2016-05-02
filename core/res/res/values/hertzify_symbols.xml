@@ -161,4 +161,8 @@
     <java-symbol type="dimen" format="float" name="presentation_clock_text_size" />
     <java-symbol type="dimen" format="float" name="large_clock_text_size" />
     <java-symbol type="dimen" format="float" name="small_clock_text_size" />
+
+    <!-- Lockscreen rotation default -->
+    <java-symbol type="bool" name="config_lockScreenRotationEnabledByDefault" />
+
 </resources>
