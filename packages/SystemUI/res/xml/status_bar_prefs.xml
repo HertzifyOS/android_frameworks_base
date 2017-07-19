@@ -171,4 +171,11 @@
         android:key="system:data_disabled_icon"
         android:title="@string/data_disabled_icon_title"
         sysui:defValue="true" />
+
+    <com.android.systemui.tuner.TunerSwitch
+        android:icon="@drawable/ic_settings_lte_to_4g"
+        android:key="system:show_fourg_icon"
+        android:title="@string/show_fourg_icon_title"
+        sysui:defValue="false" />
 </PreferenceScreen>
+

@@ -15,6 +15,7 @@
     <string name="status_bar_hd_calling">HD calling (VoLTE/VoNR)</string>
     <string name="status_bar_vowifi">Wi-Fi calling (VoWiFi)</string>
     <string name="data_disabled_icon_title">Data disabled icon</string>
+    <string name="show_fourg_icon_title">4G icon</string>
 
     <!-- Custom QS tiles -->
     <!-- Ambient display QS tile -->
