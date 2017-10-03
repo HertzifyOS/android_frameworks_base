@@ -152,4 +152,8 @@
        <item>restart_recovery</item>
        <item>restart_bootloader</item>
    </string-array>
+
+    <!-- Default values for status bar DT2S gesture -->
+    <bool name="config_dt2sGestureAvailable">false</bool>
+    <bool name="config_dt2sGestureEnabledByDefault">false</bool>
 </resources>
