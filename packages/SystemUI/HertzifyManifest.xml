@@ -23,4 +23,21 @@
     <uses-permission android:name="android.permission.MAINLINE_NETWORK_STACK" />
     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
+    <!-- SystemUI Tuner -->
+    <application>
+        <activity-alias
+            android:name=".tuner.StatusBarTuner"
+            android:targetActivity=".tuner.TunerActivity"
+            android:icon="@drawable/tuner"
+            android:theme="@style/Theme.SubSettingsBase.Expressive"
+            android:label="@string/status_bar_icons_title"
+            android:process=":tuner"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.settings.action.STATUS_BAR_TUNER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity-alias>
+    </application>
 </manifest>
