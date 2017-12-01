@@ -186,4 +186,6 @@ interface IPowerManager
 
     // Custom API
     void rebootCustom(boolean confirm, String reason, boolean wait);
+
+    void wakeUpWithProximityCheck(long time, int reason, String details, String opPackageName, int displayId);
 }
