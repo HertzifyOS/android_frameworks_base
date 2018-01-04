@@ -593,6 +593,11 @@
             </meta-data>
         </service>
 
+        <!-- Smart Pixels -->
+        <service android:name=".smartpixels.SmartPixelsService"
+                android:enabled="true"
+                android:exported="true" />
+                
         <activity android:name=".tuner.TunerActivity"
                   android:enabled="false"
                   android:icon="@drawable/tuner"
