@@ -6981,6 +6981,14 @@ public final class Settings {
          */
         @Readable
         public static final String STATUS_BAR_BATTERY_STYLE = "status_bar_battery_style";
+
+
+        /**
+         * Whether to enable advanced reboot
+         * @hide
+         */
+        @Readable
+        public static final String ADVANCED_REBOOT = "advanced_reboot";
         
         /**
          * Keys we no longer back up under the current schema, but want to continue to
