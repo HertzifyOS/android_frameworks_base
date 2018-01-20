@@ -144,4 +144,11 @@
     <string name="config_pocketJudgeVendorSensorName"></string>
     <item name="config_pocketJudgeVendorSensorValue" format="float" type="dimen">1.0</item>
     <string name="config_pocketJudgeVendorProximitySensorName"></string>
+
+    <!-- Defines the actions shown in advanced reboot submenu -->
+   <string-array name="config_restartActionsList">
+       <item>restart</item>
+       <item>restart_recovery</item>
+       <item>restart_bootloader</item>
+   </string-array>
 </resources>
