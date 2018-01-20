@@ -135,7 +135,8 @@ public class SystemSettings {
                 Settings.System.ACCESSIBILITY_FORCE_INVERT_COLOR_OVERRIDE_PACKAGES_TO_DISABLE,
                 Settings.System.LOCKSCREEN_ROTATION,
                 Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT,
-                Settings.System.STATUS_BAR_BATTERY_STYLE
+                Settings.System.STATUS_BAR_BATTERY_STYLE,
+                Settings.System.ADVANCED_REBOOT
         ));
         return settings.toArray(new String[0]);
     }
