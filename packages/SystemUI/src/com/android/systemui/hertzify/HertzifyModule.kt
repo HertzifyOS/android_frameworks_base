@@ -35,6 +35,7 @@ import com.android.systemui.qs.tiles.CompassTile
 import com.android.systemui.qs.tiles.VPNTetheringTile
 import com.android.systemui.qs.tiles.VolumeQSTile
 import com.android.systemui.qs.tiles.DnsTile
+import com.android.systemui.qs.tiles.SmartPixelsTile
 import com.android.systemui.qs.tiles.base.shared.model.QSTileConfig
 import com.android.systemui.qs.tiles.base.shared.model.QSTileUIConfig
 import com.android.systemui.res.R
@@ -136,6 +137,12 @@ interface HertzifyModule {
     @IntoMap
     @StringKey(DnsTile.TILE_SPEC)
     fun bindDnsTile(dnsTile: DnsTile): QSTileImpl<*>
+
+    /** Inject SmartPixelsTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(SmartPixelsTile.TILE_SPEC)
+    fun bindSmartPixelsTile(smartPixelsTile: SmartPixelsTile): QSTileImpl<*>
 
     companion object {
         const val AMBIENT_DISPLAY_TILE_SPEC = "ambient_display"
@@ -377,5 +384,20 @@ interface HertzifyModule {
                 instanceId = uiEventLogger.getNewInstanceId(),
                 category = TileCategory.CONNECTIVITY,
             )
+
+        @Provides
+            @IntoMap
+            @StringKey(SmartPixelsTile.TILE_SPEC)
+            fun provideSmartPixelsInfoConfig(uiEventLogger: QsEventLogger): QSTileConfig {
+                return QSTileConfig(
+                    tileSpec = TileSpec.create(SmartPixelsTile.TILE_SPEC),
+                    uiConfig = QSTileUIConfig.Resource(
+                        iconRes = R.drawable.ic_qs_smart_pixels,
+                        labelRes = R.string.quick_settings_smart_pixels
+                    ),
+                    instanceId = uiEventLogger.getNewInstanceId(),
+                    category = TileCategory.DISPLAY
+                )
+            }
     }
 }
