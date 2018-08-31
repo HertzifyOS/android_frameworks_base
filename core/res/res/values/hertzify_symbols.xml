@@ -13,4 +13,8 @@
          the sensor embedded in the power key and listening all the time
          causes a poor experience. -->
     <java-symbol type="bool" name="config_fingerprintWakeAndUnlock" />
+
+    <!-- Whether to allow process with media UID to access CameraServiceProxy -->
+    <java-symbol type="bool" name="config_allowMediaUidForCameraServiceProxy" />
+
 </resources>
