@@ -39,6 +39,7 @@ class QQSGestureListener @Inject constructor(
 ) : GestureDetector.SimpleOnGestureListener() {
 
     private var doubleTapToSleepEnabled = false
+    private var lockscreenDT2SEnabled = false
     private val quickQsOffsetHeight: Int
 
     init {
@@ -48,10 +49,17 @@ class QQSGestureListener @Inject constructor(
                         context.contentResolver, Settings.System.DOUBLE_TAP_SLEEP_GESTURE,
                         if (context.resources.getBoolean(com.android.internal.
                                 R.bool.config_dt2sGestureEnabledByDefault)) 1 else 0) != 0
+                lockscreenDT2SEnabled = Settings.System.getInt(
+                        context.contentResolver, Settings.System.DOUBLE_TAP_SLEEP_LOCKSCREEN,
+                        if (context.resources.getBoolean(com.android.internal.
+                                R.bool.config_dt2sGestureEnabledByDefault)) 1 else 0) != 0
             }
         }
         context.contentResolver.registerContentObserver(
                 Settings.System.getUriFor(Settings.System.DOUBLE_TAP_SLEEP_GESTURE),
+                false, contentObserver)
+        context.contentResolver.registerContentObserver(
+                Settings.System.getUriFor(Settings.System.DOUBLE_TAP_SLEEP_LOCKSCREEN),
                 false, contentObserver)
         contentObserver.onChange(true)
 
@@ -60,16 +68,19 @@ class QQSGestureListener @Inject constructor(
     }
 
     override fun onDoubleTapEvent(e: MotionEvent): Boolean {
-        // Go to sleep when double tapping the QQS status bar
-        // or lockscreen (keyguard showing, but not bouncer)
-        if (
-            e.actionMasked == MotionEvent.ACTION_UP &&
+        // Go to sleep on double tap the QQS status bar
+        if (e.actionMasked == MotionEvent.ACTION_UP &&
                 !statusBarStateController.isDozing &&
                 doubleTapToSleepEnabled &&
-                (e.getY() < quickQsOffsetHeight ||
-                    statusBarStateController.getState() == StatusBarState.KEYGUARD &&
-                        !centralSurfaces.isBouncerShowing()) &&
+                e.getY() < quickQsOffsetHeight &&
                 !falsingManager.isFalseDoubleTap
+        ) {
+            powerManager.goToSleep(e.getEventTime())
+            return true
+        } else if (!statusBarStateController.isDozing &&
+            lockscreenDT2SEnabled &&
+            statusBarStateController.getState() == StatusBarState.KEYGUARD &&
+            !centralSurfaces.isBouncerShowing()            
         ) {
             powerManager.goToSleep(e.getEventTime())
             return true
