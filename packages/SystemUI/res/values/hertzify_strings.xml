@@ -14,6 +14,7 @@
     <string name="status_bar_data_saver">Data saver</string>
     <string name="status_bar_call_strength">Call strength</string>
     <string name="status_bar_roaming">Roaming indicator</string>
+    <string name="data_disabled_icon_title">Data disabled icon</string>
 
     <!-- Custom QS tiles -->
     <!-- Ambient display QS tile -->
