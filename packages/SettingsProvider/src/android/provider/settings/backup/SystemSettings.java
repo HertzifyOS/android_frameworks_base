@@ -136,7 +136,8 @@ public class SystemSettings {
                 Settings.System.LOCKSCREEN_ROTATION,
                 Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT,
                 Settings.System.STATUS_BAR_BATTERY_STYLE,
-                Settings.System.ADVANCED_REBOOT
+                Settings.System.ADVANCED_REBOOT,
+                Settings.System.NAVIGATION_BAR_HINT
         ));
         return settings.toArray(new String[0]);
     }
