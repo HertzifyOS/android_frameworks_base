@@ -527,5 +527,6 @@ public class SecureSettingsValidators {
                 new InclusiveIntegerRangeValidator(0, 2));
         VALIDATORS.put(Secure.HIDE_DEVELOPER_STATUS, ANY_STRING_VALIDATOR);
         VALIDATORS.put(Secure.HIDE_APPLIST, ANY_STRING_VALIDATOR);
+        VALIDATORS.put(Secure.NAVIGATION_BAR_HINT, BOOLEAN_VALIDATOR);
     }
 }
