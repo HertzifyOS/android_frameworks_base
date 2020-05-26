@@ -559,5 +559,6 @@ public class SecureSettingsValidators {
         VALIDATORS.put(Secure.HIDE_APPLIST, ANY_STRING_VALIDATOR);
         VALIDATORS.put(Secure.VPN_ENFORCE_DNS, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.VPN_ENFORCE_DNS_STORE, new DiscreteValueValidator(new String[] {"-1", "0", "1", "2"}));
+        VALIDATORS.put(Secure.BERRY_BLACK_THEME, BOOLEAN_VALIDATOR);
     }
 }
