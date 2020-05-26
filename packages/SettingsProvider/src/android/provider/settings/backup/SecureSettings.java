@@ -352,5 +352,6 @@ public class SecureSettings {
         Settings.Secure.DOZE_PICK_UP_GESTURE_AMBIENT,
         Settings.Secure.DOZE_TAP_GESTURE_AMBIENT,
         Settings.Secure.VPN_ENFORCE_DNS,
+        Settings.Secure.BERRY_BLACK_THEME,
     };
 }
