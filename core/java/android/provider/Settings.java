@@ -7033,7 +7033,13 @@ public final class Settings {
          * @hide
          */
         public static final String RECENTS_LOCKED_TASKS = "recents_locked_tasks";
-        
+
+        /**
+         * Whether StatusBar icons should use app icon
+         * @hide
+         */
+        public static final String STATUSBAR_COLORED_ICONS = "statusbar_colored_icons";
+
         /**
          * Whether to enable advanced reboot
          * @hide
@@ -18053,7 +18059,7 @@ public final class Settings {
          * Force LTE Carrier Aggregation setting per SIM slot.
          * Use FORCE_LTE_CA_0 for SIM slot 0 (first SIM)
          * Use FORCE_LTE_CA_1 for SIM slot 1 (second SIM)
-         * 
+         *
          * Type: int (0 = disabled, 1 = enabled)
          * @hide
          */
