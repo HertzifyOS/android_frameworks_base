@@ -6,6 +6,8 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Status bar - icons -->
     <string name="status_bar_icons_title">Status bar icons</string>
+    <string name="status_bar_nfc">NFC</string>
+    <string name="accessibility_status_bar_nfc">Nfc</string>
 
     <!-- Custom QS tiles -->
     <!-- Ambient display QS tile -->
