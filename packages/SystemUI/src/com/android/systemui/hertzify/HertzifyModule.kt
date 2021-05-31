@@ -35,6 +35,7 @@ import com.android.systemui.qs.tiles.CompassTile
 import com.android.systemui.qs.tiles.VPNTetheringTile
 import com.android.systemui.qs.tiles.VolumeQSTile
 import com.android.systemui.qs.tiles.DnsTile
+import com.android.systemui.qs.tiles.SleepModeTile
 import com.android.systemui.qs.tiles.base.shared.model.QSTileConfig
 import com.android.systemui.qs.tiles.base.shared.model.QSTileUIConfig
 import com.android.systemui.res.R
@@ -144,6 +145,12 @@ interface HertzifyModule {
     @StringKey(SmartPixelTile.TILE_SPEC)
     abstract fun bindSmartPixelTile(tile: SmartPixelTile): QSTileImpl<*>
 
+    /** Inject SleepModeTile into tileMap in QSModule */
+    @Binds  
+    @IntoMap
+    @StringKey(SleepModeTile.TILE_SPEC)
+    fun bindSleepModeTile(sleepModeTile: SleepModeTile): QSTileImpl<*>
+
     companion object {
         const val AMBIENT_DISPLAY_TILE_SPEC = "ambient_display"
         const val AOD_TILE_SPEC = "aod"
@@ -160,6 +167,7 @@ interface HertzifyModule {
         const val VPN_TETHERING_TILE_SPEC = "vpn_tethering"
         const val VOLUME_TILE_SPEC = "volume"
         const val SMART_PIXELS_TILE_SPEC = "smart_pixels"
+        const val SLEEP_MODE_TILE_SPEC = "sleep_mode"
         
         @Provides
         @IntoMap
@@ -399,6 +407,21 @@ interface HertzifyModule {
                     ),
                 instanceId = uiEventLogger.getNewInstanceId(),
                 category = TileCategory.DISPLAY,
+            )
+
+        @Provides
+        @IntoMap
+        @StringKey(SLEEP_MODE_TILE_SPEC)
+        fun provideSleepModeTileConfig(uiEventLogger: QsEventLogger): QSTileConfig =
+            QSTileConfig(
+                tileSpec = TileSpec.create(SLEEP_MODE_TILE_SPEC),
+                uiConfig =
+                    QSTileUIConfig.Resource(
+                        iconRes = R.drawable.ic_sleep,
+                        labelRes = R.string.quick_settings_sleep_mode_label
+                    ),
+                instanceId = uiEventLogger.getNewInstanceId(),
+                category = TileCategory.UTILITIES,
             )
     }
 }
