@@ -6,4 +6,7 @@
 <resources>
     <!-- Face unlock icon -->
     <dimen name="face_unlock_icon_margin_top">6dp</dimen>
+
+    <!-- Maximum vertical offset of statusbar for burn-in protection -->
+    <dimen name="status_bar_offset_max_y">4dp</dimen>
 </resources>
