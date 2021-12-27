@@ -10,6 +10,7 @@
     <string name="accessibility_status_bar_nfc">Nfc</string>
     <string name="status_bar_wifi_standard">Wi-Fi standard number</string>
     <string name="status_bar_data_saver">Data saver</string>
+    <string name="status_bar_call_strength">Call strength</string>
 
     <!-- Custom QS tiles -->
     <!-- Ambient display QS tile -->
