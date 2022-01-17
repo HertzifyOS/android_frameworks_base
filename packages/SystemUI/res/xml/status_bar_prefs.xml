@@ -54,11 +54,6 @@
         android:title="@string/quick_settings_bluetooth_label" />
 
     <com.android.systemui.tuner.StatusBarSwitch
-        android:icon="@drawable/ic_statusbar_camera"
-        android:key="cameratoggle"
-        android:title="@string/quick_settings_camera_label" />
-
-    <com.android.systemui.tuner.StatusBarSwitch
         android:icon="@drawable/ic_statusbar_do_not_disturb"
         android:key="zen"
         android:title="@string/quick_settings_dnd_label" />
