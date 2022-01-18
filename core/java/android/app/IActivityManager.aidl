@@ -1080,4 +1080,9 @@ interface IActivityManager {
     String getSpoofTrickyStoreKeyBox();
 
     String getSpoofTrickyStorePatch();
+
+    /**
+     *  Force full screen for devices with cutout
+     */
+    boolean shouldForceCutoutFullscreen(in String packageName);
 }
