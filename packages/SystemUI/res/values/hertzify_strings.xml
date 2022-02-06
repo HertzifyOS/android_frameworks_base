@@ -63,4 +63,7 @@
 
     <!-- 5G toggle in Internet Dialog -->
     <string name="enable_fiveg">Enable 5G</string>
+
+    <!-- Label for UI element which allows to use lens on screenshot [CHAR LIMIT=30] -->
+    <string name="screenshot_lens_label">Lens</string>
 </resources>
