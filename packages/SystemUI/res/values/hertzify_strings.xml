@@ -310,4 +310,7 @@
     <string name="dynamic_bar_sports_final">Final</string>
     <string name="dynamic_bar_sports_halftime">Halftime</string>
     <string name="dynamic_bar_sports_upcoming">Upcoming</string>
+
+    <!-- Name of the roaming status bar icon. -->
+    <string name="status_bar_roaming">Roaming indicator</string>
 </resources>
