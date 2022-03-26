@@ -167,4 +167,7 @@
 
     <!-- Name of the Wi-Fi standard number in status bar -->
     <string name="status_bar_wifi_standard">Wi-Fi standard number</string>
+
+    <!-- Name of the Data saver in status bar -->
+    <string name="status_bar_data_saver">Data saver</string>
 </resources>
