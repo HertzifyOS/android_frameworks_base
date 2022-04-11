@@ -30,6 +30,7 @@ import com.android.systemui.qs.tiles.VpnTile
 import com.android.systemui.qs.tiles.SoundTile
 import com.android.systemui.qs.tiles.DataSwitchTile
 import com.android.systemui.qs.tiles.LocaleTile
+import com.android.systemui.qs.tiles.PreferredNetworkTile
 import com.android.systemui.qs.tiles.base.shared.model.QSTileConfig
 import com.android.systemui.qs.tiles.base.shared.model.QSTileUIConfig
 import com.android.systemui.res.R
@@ -102,6 +103,12 @@ interface HertzifyModule {
     @StringKey(LocaleTile.TILE_SPEC)
     fun bindLocaleTile(localeTile: LocaleTile): QSTileImpl<*>
 
+    /** Inject PreferredNetworkTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(PreferredNetworkTile.TILE_SPEC)
+    fun bindPreferredNetworkTile(preferredNetworkTile: PreferredNetworkTile): QSTileImpl<*>
+
     companion object {
         const val AMBIENT_DISPLAY_TILE_SPEC = "ambient_display"
         const val AOD_TILE_SPEC = "aod"
@@ -113,6 +120,7 @@ interface HertzifyModule {
         const val SOUND_TILE_SPEC = "sound"
         const val DATA_SWITCH_TILE_SPEC = "dataswitch"
         const val LOCALE_TILE_SPEC = "locale"
+        const val PREFERRED_NETWORK_TILE_SPEC = "preferred_network"
 
         @Provides
         @IntoMap
@@ -262,6 +270,21 @@ interface HertzifyModule {
                     ),
                 instanceId = uiEventLogger.getNewInstanceId(),
                 category = TileCategory.ACCESSIBILITY,
+            )
+
+        @Provides
+        @IntoMap
+        @StringKey(PREFERRED_NETWORK_TILE_SPEC)
+        fun providePreferredNetworkTile(uiEventLogger: QsEventLogger): QSTileConfig =
+            QSTileConfig(
+                tileSpec = TileSpec.create(PREFERRED_NETWORK_TILE_SPEC),
+                uiConfig =
+                    QSTileUIConfig.Resource(
+                        iconRes = R.drawable.ic_preferred_network,
+                        labelRes = R.string.quick_settings_preferred_network_label
+                    ),
+                instanceId = uiEventLogger.getNewInstanceId(),
+                category = TileCategory.CONNECTIVITY,
             )
     }
 }
