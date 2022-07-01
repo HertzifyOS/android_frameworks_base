@@ -65,4 +65,7 @@
 
     <!-- Show 5G toggle in internet dialog when available -->
     <bool name="config_supportsVONR">true</bool>
+
+    <!-- Charging info current divider, if needed -->
+    <integer name="config_currentInfoDivider" translatable="false">1000</integer>
 </resources>
