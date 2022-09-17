@@ -524,11 +524,6 @@ public class ThemeOverlayController implements CoreStartable, Dumpable {
             });
         }
 
-        // All wallpaper color and keyguard logic only applies when Monet is enabled.
-        if (!mIsMonetEnabled) {
-            return;
-        }
-
         mSecureSettings.registerContentObserverForUserSync(
                 Settings.Secure.getUriFor(Settings.Secure.BERRY_BLACK_THEME),
                 false,
