@@ -14499,6 +14499,13 @@ public final class Settings {
         public static final String QS_BRIGHTNESS_SLIDER_POSITION = "qs_brightness_slider_position";
 
         /**
+         * Whether to show an overlay in the bottom corner of the screen on copying stuff
+         * into the clipboard.
+         * @hide
+         */
+        public static final String SHOW_CLIPBOARD_OVERLAY = "show_clipboard_overlay";
+        
+        /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
          */
