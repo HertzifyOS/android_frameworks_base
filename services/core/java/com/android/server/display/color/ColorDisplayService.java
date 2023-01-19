@@ -330,8 +330,9 @@ public final class ColorDisplayService extends SystemService {
     }
 
     private boolean isColorInversionInSetupWizardEnabled() {
-        return getContext().getResources()
-               .getBoolean(R.bool.config_enableColorInversionInSetupWizard)
+        return isAccessibilityInversionAvailable()
+               && getContext().getResources()
+                      .getBoolean(R.bool.config_enableColorInversionInSetupWizard)
                && Flags.enableColorInversionInSuw();
     }
 
@@ -577,7 +578,7 @@ public final class ColorDisplayService extends SystemService {
     }
 
     private void setUpColorInversionAccessibility() {
-        if (mColorInversionObserverRegistered) {
+        if (mColorInversionObserverRegistered || !isAccessibilityInversionAvailable()) {
             return;
         }
         final ContentResolver cr = getContext().getContentResolver();
@@ -759,10 +760,16 @@ public final class ColorDisplayService extends SystemService {
     }
 
     private boolean isAccessiblityInversionEnabled() {
-        return Secure.getIntForUser(getContext().getContentResolver(),
+        return isAccessibilityInversionAvailable()
+            && Secure.getIntForUser(getContext().getContentResolver(),
             Secure.ACCESSIBILITY_DISPLAY_INVERSION_ENABLED,
             /* default= */ SETTINGS_DISABLED_VALUE,
             mCurrentUser) == SETTINGS_ENABLED_VALUE;
+    }
+
+    private boolean isAccessibilityInversionAvailable() {
+        return getContext().getResources().getBoolean(
+                R.bool.config_displayInversionAvailable);
     }
 
     private boolean isAccessibilityEnabled() {
