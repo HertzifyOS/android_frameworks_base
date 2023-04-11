@@ -6921,7 +6921,7 @@ public final class Settings {
          * @hide
          */
         public static final String SCREENSHOT_SHUTTER_SOUND = "screenshot_shutter_sound";
-        
+
         /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
@@ -14120,6 +14120,19 @@ public final class Settings {
         public static final String OTP_NOTIFICATION_REDACTION_LOCK_TIME =
                 "otp_redaction_lock_time";
 
+        /**
+         * Whether to show ambient instead of waking for the tap gesture
+         * @hide
+         */
+        public static final String DOZE_TAP_GESTURE_AMBIENT = "doze_tap_gesture_ambient";
+
+        /**
+         * Whether to show ambient instead of waking for the pickup gesture
+         * Do note quick pickup (device sensor) is already configured to do that
+         * @hide
+         */
+        public static final String DOZE_PICK_UP_GESTURE_AMBIENT = "doze_pick_up_gesture_ambient";
+ 
         /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
