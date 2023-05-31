@@ -532,5 +532,6 @@ public class SecureSettingsValidators {
                 new InclusiveIntegerRangeValidator(0, 2));
         VALIDATORS.put(Secure.QS_BRIGHTNESS_SLIDER_POSITION,
                 new InclusiveIntegerRangeValidator(0, 1));
+        VALIDATORS.put(Secure.HIDE_DEVELOPER_STATUS, ANY_STRING_VALIDATOR);
     }
 }
