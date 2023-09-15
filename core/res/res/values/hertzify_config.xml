@@ -105,4 +105,7 @@
 
     <!-- -1 means use same as config_screenBrightnessDoze -->
     <integer name="config_screenBrightnessPulse">-1</integer>
+
+    <!-- Smart 5G -->
+    <bool name="config_supportSmart5G">false</bool>
 </resources>
