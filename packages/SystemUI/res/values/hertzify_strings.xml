@@ -164,4 +164,7 @@
     <string name="vpn_tethering_label">VPN tethering</string>
     <string name="vpn_tethering_changed_off">VPN tethering turned off.</string>
     <string name="vpn_tethering_changed_on">VPN tethering turned on.</string>
+
+    <!-- Name of the Wi-Fi standard number in status bar -->
+    <string name="status_bar_wifi_standard">Wi-Fi standard number</string>
 </resources>
