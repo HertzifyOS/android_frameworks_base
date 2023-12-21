@@ -555,5 +555,7 @@ public class SecureSettingsValidators {
                 COLON_SEPARATED_COMPONENT_LIST_VALIDATOR);
         VALIDATORS.put(Secure.DOZE_TAP_GESTURE_AMBIENT, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.DOZE_PICK_UP_GESTURE_AMBIENT, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.VPN_ENFORCE_DNS, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.VPN_ENFORCE_DNS_STORE, new DiscreteValueValidator(new String[] {"-1", "0", "1", "2"}));
     }
 }
