@@ -206,6 +206,7 @@ import com.android.systemui.statusbar.phone.UnlockedScreenOffAnimationController
 import com.android.systemui.statusbar.policy.ConfigurationController;
 import com.android.systemui.statusbar.policy.KeyguardStateController;
 import com.android.systemui.statusbar.policy.SplitShadeStateController;
+import com.android.systemui.tuner.TunerService;
 import com.android.systemui.unfold.SysUIUnfoldComponent;
 import com.android.systemui.util.ScrimUtils;
 import com.android.systemui.util.Utils;
@@ -267,6 +268,10 @@ public final class NotificationPanelViewController implements
     private static final String COUNTER_PANEL_OPEN = "panel_open";
     public static final String COUNTER_PANEL_OPEN_QS = "panel_open_qs";
     private static final String COUNTER_PANEL_OPEN_PEEK = "panel_open_peek";
+
+    private static final String DOUBLE_TAP_SLEEP_GESTURE =
+            "system:" + Settings.System.DOUBLE_TAP_SLEEP_GESTURE;
+
     private static final Rect M_DUMMY_DIRTY_RECT = new Rect(0, 0, 1, 1);
     private static final Rect EMPTY_RECT = new Rect();
     //TODO(b/394977231) delete this temporary workaround used only by tests
@@ -298,7 +303,6 @@ public final class NotificationPanelViewController implements
     private final ShadeHeadsUpChangedListener mOnHeadsUpChangedListener =
             new ShadeHeadsUpChangedListener();
     private final ConfigurationListener mConfigurationListener = new ConfigurationListener();
-    private final ContentObserver mDoubleTapToSleepObserver;
     private final StatusBarStateListener mStatusBarStateListener = new StatusBarStateListener();
     private final NotificationPanelView mView;
     private final VibratorHelper mVibratorHelper;
@@ -344,6 +348,7 @@ public final class NotificationPanelViewController implements
     private final TouchHandler mTouchHandler = new TouchHandler();
     private final BlurConfig mBlurConfig;
     private final WindowRootViewBlurInteractor mWindowRootViewBlurInteractor;
+    private final TunerService mTunerService;
 
     private long mDownTime;
     private long mStatusBarLongPressDowntime = -1L;
@@ -517,6 +522,10 @@ public final class NotificationPanelViewController implements
     private int mSplitShadeScrimTransitionDistance;
 
     private final NotificationListContainer mNotificationListContainer;
+
+    private boolean mBrightnessControl;
+    private boolean mBrightnessControlLockscreen;
+
     private final NPVCDownEventState.Buffer mLastDownEvents;
     private final KeyguardClockInteractor mKeyguardClockInteractor;
     private float mMinExpandHeight;
@@ -669,6 +678,7 @@ public final class NotificationPanelViewController implements
             BlurConfig blurConfig,
             Lazy<ShadeDisplaysRepository> shadeDisplaysRepository,
             WindowRootViewBlurInteractor windowRootViewBlurInteractor,
+            TunerService tunerService,
             Context context) {
         mBlurConfig = blurConfig;
         mWindowRootViewBlurInteractor = windowRootViewBlurInteractor;
@@ -763,6 +773,7 @@ public final class NotificationPanelViewController implements
                 mSplitShadeStateController.shouldUseSplitNotificationShade(mResources);
         mView.setWillNotDraw(!DEBUG_DRAWABLE);
         mShadeHeaderController = shadeHeaderController;
+        mTunerService = tunerService;
         mAnimateBack = predictiveBackAnimateShade();
         mFalsingCollector = falsingCollector;
         mPowerManager = powerManager;
@@ -801,15 +812,6 @@ public final class NotificationPanelViewController implements
                 return true;
             }
         });
-        mDoubleTapToSleepObserver = new ContentObserver(handler) {
-            @Override
-            public void onChange(boolean selfChange) {
-                mDoubleTapToSleepEnabled = Settings.System.getInt(mContentResolver,
-                        Settings.System.DOUBLE_TAP_SLEEP_GESTURE,
-                        mResources.getBoolean(com.android.internal.R.bool.
-                                config_dt2sGestureEnabledByDefault) ? 1 : 0) != 0;
-            }
-        };
         mConversationNotificationManager = conversationNotificationManager;
         mScreenOffAnimationController = screenOffAnimationController;
         mUnlockedScreenOffAnimationController = unlockedScreenOffAnimationController;
@@ -3073,7 +3075,8 @@ public final class NotificationPanelViewController implements
         return !isDirectionUpwards(x, y);
     }
 
-    private void fling(float vel, boolean expand, boolean expandBecauseOfFalsing) {
+    @Override
+    public void fling(float vel, boolean expand, boolean expandBecauseOfFalsing) {
         fling(vel, expand, 1.0f /* collapseSpeedUpFactor */, expandBecauseOfFalsing);
     }
 
@@ -3719,7 +3722,8 @@ public final class NotificationPanelViewController implements
         positionClockAndNotifications(true /* forceUpdate */);
     }
 
-    private final class ShadeAttachStateChangeListener implements View.OnAttachStateChangeListener {
+    private final class ShadeAttachStateChangeListener implements View.OnAttachStateChangeListener,
+            TunerService.Tunable {
         @Override
         public void onViewAttachedToWindow(View v) {
             mFragmentService.getFragmentHostManager(mView)
@@ -3730,10 +3734,11 @@ public final class NotificationPanelViewController implements
                 mStatusBarStateListener.onStateChanged(mStatusBarStateController.getState(), true);
             }
             mConfigurationController.addCallback(mConfigurationListener);
-            mContentResolver.registerContentObserver(Settings.System.getUriFor(
-                    Settings.System.DOUBLE_TAP_SLEEP_GESTURE), false,
-                    mDoubleTapToSleepObserver);
-            mDoubleTapToSleepObserver.onChange(true);
+            mTunerService.addTunable(this, DOUBLE_TAP_SLEEP_GESTURE);
+
+            mTunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL);
+            mTunerService.addTunable(this, STATUS_BAR_BRIGHTNESS_CONTROL_LOCKSCREEN);
+
             // Theme might have changed between inflating this view and attaching it to the
             // window, so
             // force a call to onThemeChanged
@@ -3744,12 +3749,34 @@ public final class NotificationPanelViewController implements
 
         @Override
         public void onViewDetachedFromWindow(View v) {
-            mContentResolver.unregisterContentObserver(mDoubleTapToSleepObserver);
             mFragmentService.getFragmentHostManager(mView)
                     .removeTagListener(QS.TAG, mQsController.getQsFragmentListener());
             mStatusBarStateController.removeCallback(mStatusBarStateListener);
             mConfigurationController.removeCallback(mConfigurationListener);
+            mTunerService.removeTunable(this);
             mFalsingManager.removeTapListener(mFalsingTapListener);
+        }
+
+        @Override
+        public void onTuningChanged(String key, String newValue) {
+            switch (key) {
+                case DOUBLE_TAP_SLEEP_GESTURE:
+                    mDoubleTapToSleepEnabled =
+                            TunerService.parseIntegerSwitch(newValue,
+                                mResources.getBoolean(com.android.internal.R.bool.
+                                config_dt2sGestureEnabledByDefault));
+                    break;
+                case STATUS_BAR_BRIGHTNESS_CONTROL:
+                    mBrightnessControl =
+                            TunerService.parseIntegerSwitch(newValue, false);
+                    break;
+                case STATUS_BAR_BRIGHTNESS_CONTROL_LOCKSCREEN:
+                    mBrightnessControlLockscreen =
+                            TunerService.parseIntegerSwitch(newValue, false);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -4121,6 +4148,20 @@ public final class NotificationPanelViewController implements
                     && event.getDownTime() == mStatusBarLongPressDowntime) {
                 mShadeLog.d("Touch has same down time as Status Bar long press. Ignoring.");
                 return false;
+            }
+            if (mBrightnessControl) {
+                final int actionIndex = event.getActionIndex();
+                final float swipeY = event.getY(actionIndex);
+                if (swipeY < mStatusBarMinHeight &&
+                        (mBarState != KEYGUARD || mBrightnessControlLockscreen)) {
+                    mCentralSurfaces.brightnessControl(event);
+                    final int action = event.getActionMasked();
+                    if (action == MotionEvent.ACTION_UP
+                            || action == MotionEvent.ACTION_CANCEL) {
+                        mCentralSurfaces.onBrightnessChanged(true);
+                    }
+                    return true;
+                }
             }
             if (!mHeadsUpTouchHelper.isTrackingHeadsUp() && mQsController.handleTouch(
                     event, isFullyCollapsed(), isShadeOrQsHeightAnimationRunning())) {
