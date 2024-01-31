@@ -12,7 +12,9 @@
     <string name="status_bar_data_saver">Data saver</string>
     <string name="status_bar_call_strength">Call strength</string>
     <string name="status_bar_roaming">Roaming indicator</string>
-
+    <string name="status_bar_hd_calling">HD calling (VoLTE/VoNR)</string>
+    <string name="status_bar_vowifi">Wi-Fi calling (VoWiFi)</string>
+    
     <!-- Custom QS tiles -->
     <!-- Ambient display QS tile -->
     <string name="quick_settings_ambient_display_label">Ambient display</string>
