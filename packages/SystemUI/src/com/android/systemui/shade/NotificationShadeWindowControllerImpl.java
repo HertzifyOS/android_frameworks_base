@@ -120,6 +120,7 @@ public class NotificationShadeWindowControllerImpl
     private final long mLockScreenDisplayTimeout;
     private final float mKeyguardPreferredRefreshRate; // takes precedence over max
     private final float mKeyguardMaxRefreshRate;
+    private final float mAODMaxRefreshRate;
     private final KeyguardViewMediator mKeyguardViewMediator;
     private final KeyguardBypassController mKeyguardBypassController;
     private final Executor mBackgroundExecutor;
@@ -234,6 +235,11 @@ public class NotificationShadeWindowControllerImpl
                 context.getResources().getInteger(R.integer.config_keyguardMaxRefreshRate);
         mTopUiController = topUiController;
         mKeyguardSurfaceBehindInteractor = keyguardSurfaceBehindInteractor;
+
+        // Same as described above but limited to AOD
+        // Allows using a different rate for each
+        mAODMaxRefreshRate = context.getResources()
+                .getInteger(R.integer.config_aodMaxRefreshRate);
 
         if (SceneContainerFlag.isEnabled()) {
             javaAdapter.alwaysCollectFlow(
@@ -445,6 +451,7 @@ public class NotificationShadeWindowControllerImpl
     private void applyKeyguardFlags(NotificationShadeWindowState state) {
         final boolean keyguardOrAod =
                 state.keyguardShowing || (state.dozing && mDozeParameters.getAlwaysOn());
+        boolean wasKeyguardRateSet = false;
         if ((keyguardOrAod && !state.mediaBackdropShowing && !state.lightRevealScrimOpaque)
                 || (!SceneContainerFlag.isEnabled()
                         && mKeyguardViewMediator.isAnimatingBetweenKeyguardAndSurfaceBehind())
@@ -480,6 +487,7 @@ public class NotificationShadeWindowControllerImpl
                 // Both max and min display refresh rate must be set to take effect:
                 mLpChanged.preferredMaxDisplayRefreshRate = mKeyguardPreferredRefreshRate;
                 mLpChanged.preferredMinDisplayRefreshRate = mKeyguardPreferredRefreshRate;
+                wasKeyguardRateSet = true;
             } else {
                 mLpChanged.preferredMaxDisplayRefreshRate = 0;
                 mLpChanged.preferredMinDisplayRefreshRate = 0;
@@ -495,6 +503,7 @@ public class NotificationShadeWindowControllerImpl
                             && !state.keyguardGoingAway;
             if (state.dozing || bypassOnKeyguard) {
                 mLpChanged.preferredMaxDisplayRefreshRate = mKeyguardMaxRefreshRate;
+                wasKeyguardRateSet = true;
             } else {
                 mLpChanged.preferredMaxDisplayRefreshRate = 0;
             }
@@ -512,6 +521,19 @@ public class NotificationShadeWindowControllerImpl
             mLpChanged.inputFeatures |= LayoutParams.INPUT_FEATURE_SENSITIVE_FOR_PRIVACY;
         } else {
             mLpChanged.inputFeatures &= ~LayoutParams.INPUT_FEATURE_SENSITIVE_FOR_PRIVACY;
+        }
+
+        if (mAODMaxRefreshRate > 0) {
+            if (state.dozing) {
+                // limit on AOD & ambient if we have that set
+                // overrides set max keyguard rate
+                mLpChanged.preferredMaxDisplayRefreshRate = mAODMaxRefreshRate;
+            } else if (!wasKeyguardRateSet) {
+                // un-limit when out, but only if max keyguard rate wasn't set
+                mLpChanged.preferredMaxDisplayRefreshRate = 0;
+            }
+            Trace.setCounter("display_max_refresh_rate",
+                        (long) mLpChanged.preferredMaxDisplayRefreshRate);
         }
     }
 

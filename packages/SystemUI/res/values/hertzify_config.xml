@@ -79,4 +79,7 @@
 
     <!-- Notification counter -->
     <integer name="status_bar_notification_info_maxnum">999</integer>
+
+    <!-- Preferred max refresh rate at AOD & Ambient Display, if supported by the display. -->
+    <integer name="config_aodMaxRefreshRate">-1</integer>
 </resources>
