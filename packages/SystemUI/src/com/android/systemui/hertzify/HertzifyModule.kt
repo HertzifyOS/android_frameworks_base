@@ -34,6 +34,7 @@ import com.android.systemui.qs.tiles.PreferredNetworkTile
 import com.android.systemui.qs.tiles.CompassTile
 import com.android.systemui.qs.tiles.VPNTetheringTile
 import com.android.systemui.qs.tiles.VolumeQSTile
+import com.android.systemui.qs.tiles.DnsTile
 import com.android.systemui.qs.tiles.base.shared.model.QSTileConfig
 import com.android.systemui.qs.tiles.base.shared.model.QSTileUIConfig
 import com.android.systemui.res.R
@@ -129,6 +130,12 @@ interface HertzifyModule {
     @IntoMap
     @StringKey(VolumeQSTile.TILE_SPEC)
     fun bindVolumeQSTile(volumeQSTile: VolumeQSTile): QSTileImpl<*>
+
+    /** Inject DnsTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(DnsTile.TILE_SPEC)
+    fun bindDnsTile(dnsTile: DnsTile): QSTileImpl<*>
 
     companion object {
         const val AMBIENT_DISPLAY_TILE_SPEC = "ambient_display"
@@ -354,6 +361,21 @@ interface HertzifyModule {
                     ),
                 instanceId = uiEventLogger.getNewInstanceId(),
                 category = TileCategory.UTILITIES
+            )
+
+        @Provides
+        @IntoMap
+        @StringKey(DnsTile.TILE_SPEC)
+        fun provideDnsTile(uiEventLogger: QsEventLogger): QSTileConfig =
+            QSTileConfig(
+                tileSpec = TileSpec.create(DnsTile.TILE_SPEC),
+                uiConfig =
+                    QSTileUIConfig.Resource(
+                        iconRes = R.drawable.ic_settings_dns,
+                        labelRes = com.android.settingslib.R.string.select_private_dns_configuration_title
+                    ),
+                instanceId = uiEventLogger.getNewInstanceId(),
+                category = TileCategory.CONNECTIVITY,
             )
     }
 }
