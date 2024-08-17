@@ -180,4 +180,8 @@
 
     <!-- Lockscreen rotation default -->
     <bool name="config_lockScreenRotationEnabledByDefault">false</bool>
+
+    <!-- -1 means use same as config_screenBrightnessDoze -->
+    <integer name="config_screenBrightnessPulse">-1</integer>
+    
 </resources>
