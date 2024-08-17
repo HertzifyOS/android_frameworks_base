@@ -165,4 +165,7 @@
     <!-- Lockscreen rotation default -->
     <java-symbol type="bool" name="config_lockScreenRotationEnabledByDefault" />
 
+    <!-- Pulse brightness -->
+    <java-symbol type="integer" name="config_screenBrightnessPulse" />
+    
 </resources>
