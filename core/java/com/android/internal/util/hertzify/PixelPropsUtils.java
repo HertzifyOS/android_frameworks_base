@@ -32,6 +32,8 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.android.internal.util.hertzify.KeyProviderManager;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -394,6 +396,12 @@ public class PixelPropsUtils {
                 Settings.Secure.PI_ENABLE_SPOOF, 1) == 1;
         if (!isPiSpoofEnabled)
             return;
+
+        // If a keybox is found, don't block key attestation
+        if (KeyProviderManager.isKeyboxAvailable()) {
+            dlog("Key attestation blocking is disabled because a keybox is defined to spoof");
+            return;
+        }
 
         // Check stack for Play Integrity
         if (isCallerPlayIntegrity()) {
