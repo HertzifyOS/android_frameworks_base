@@ -45,4 +45,20 @@
 
     <!-- Whether to cancel fingerprint operation if not idle -->
     <java-symbol type="bool" name="config_fpCancelIfNotIdle" />
+
+    <!-- Settings Restart -->
+    <java-symbol type="string" name="settings_restart_title" />
+    <java-symbol type="string" name="settings_restart_message" />
+
+    <!-- Soft restart dialog -->
+    <java-symbol type="string" name="system_restart_title" />
+    <java-symbol type="string" name="system_restart_message" />
+
+    <!-- SystemUI restart dialog -->
+    <java-symbol type="string" name="systemui_restart_title" />
+    <java-symbol type="string" name="systemui_restart_message" />
+
+    <!-- Launcher restart dialog -->
+    <java-symbol type="string" name="launcher_restart_title" />
+    <java-symbol type="string" name="launcher_restart_message" />
 </resources>
