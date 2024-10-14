@@ -41,4 +41,6 @@
     <dimen name="weather_dream_overlay_complication_line_height">52.0dip</dimen>
     <dimen name="weather_dream_overlay_complication_text_size">45.0dip</dimen>
 
+    <!-- Lockscreen clock -->
+    <dimen name="custom_clock_frame_margin_top">0dp</dimen>
 </resources>
