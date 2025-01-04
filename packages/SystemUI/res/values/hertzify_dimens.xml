@@ -40,4 +40,7 @@
     <dimen name="weather_dream_complication_text_descent_extra_padding">1.0dp</dimen>
     <dimen name="weather_dream_overlay_complication_line_height">52.0dp</dimen>
     <dimen name="weather_dream_overlay_complication_text_size">45.0dp</dimen>
+
+    <!-- Face unlock icon -->
+    <dimen name="face_unlock_icon_margin_top">6dp</dimen>
 </resources>
