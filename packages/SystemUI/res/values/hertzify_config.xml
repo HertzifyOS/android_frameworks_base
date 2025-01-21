@@ -68,4 +68,7 @@
 
     <!-- Default for LineageSettings.Secure.QS_SHOW_BRIGHTNESS_SLIDER -->
     <bool name="def_qs_show_brightness_slider">true</bool>
+
+    <!-- Show 5G toggle in internet dialog when available -->
+    <bool name="config_supportsVONR">true</bool>
 </resources>
