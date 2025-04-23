@@ -1088,4 +1088,6 @@ interface IActivityManager {
     String getSpoofTrickyStorePatch();
 
     String getSpoofAppPropsConfig();
+
+    void releaseMemory(int minAdj, int maxKillCount, boolean includeUIProcesses, boolean skipCamera);
 }
