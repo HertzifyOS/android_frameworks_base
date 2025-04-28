@@ -51,6 +51,7 @@ import android.metrics.LogMaker;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.os.RemoteException;
 import android.os.ServiceManager;
@@ -381,6 +382,8 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
     private final NotificationsController mNotificationsController;
     private final StatusBarHideIconsForBouncerManager mStatusBarHideIconsForBouncerManager;
 
+    private final Handler mHandler = new Handler(Looper.getMainLooper());
+
     /** Controller for the Shade. */
     private final ShadeSurface mShadeSurface;
     private final ShadeLogger mShadeLogger;
@@ -405,6 +408,9 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
     private final ActivityStarter mActivityStarter;
 
     private final DisplayMetrics mDisplayMetrics;
+
+    private static final long GC_INTERVAL_MS = 10 * 60 * 1000L; // 10 minutes
+    private long lastGcTime = 0L;
 
     // XXX: gesture research
     private final GestureRecorder mGestureRec = DEBUG_GESTURES
@@ -2114,6 +2120,8 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
                         () -> mCommandQueueCallbacks.onEmergencyActionLaunchGestureDetected());
             }
             updateIsKeyguard();
+            // make sure we do garbage collection at screen off but delay it to avoid black wallpaper
+            mHandler.postDelayed(mSystemUiGcOpt, 5000);
         }
 
         @Override
@@ -2161,6 +2169,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
                 }
             });
             DejankUtils.stopDetectingBlockingIpcs(tag);
+            mHandler.removeCallbacks(mSystemUiGcOpt);
         }
 
         /**
@@ -2221,6 +2230,20 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
                 }
             }
             updateScrimController();
+        }
+    };
+
+    private final Runnable mSystemUiGcOpt = new Runnable() {
+        @Override
+        public void run() {
+            long currentTime = System.currentTimeMillis();
+            if (lastGcTime == 0L || currentTime - lastGcTime > GC_INTERVAL_MS) {
+                Log.v("GcOpt", "performing garbage collection for SystemUI");
+                System.gc();
+                System.runFinalization();
+                System.gc();
+                lastGcTime = currentTime;
+            }
         }
     };
 
