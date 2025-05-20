@@ -73,6 +73,7 @@ import android.app.admin.DevicePolicyManagerInternal;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentProvider;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -83,6 +84,7 @@ import android.content.pm.ResolveInfo;
 import android.content.pm.ServiceInfo;
 import android.content.pm.UserInfo;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.graphics.Region;
 import android.hardware.display.DisplayManagerInternal;
 import android.hardware.input.InputManager;
@@ -201,6 +203,7 @@ import java.lang.annotation.Target;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -394,6 +397,8 @@ public final class InputMethodManagerService implements IInputMethodManagerImpl.
     @SharedByAllUsersField
     private final UserDataRepository mUserDataRepository;
 
+    @MultiUserUnawareField
+    final SettingsObserver mSettingsObserver;
     final WindowManagerInternal mWindowManagerInternal;
     private final ActivityManagerInternal mActivityManagerInternal;
     final PackageManagerInternal mPackageManagerInternal;
@@ -581,6 +586,42 @@ public final class InputMethodManagerService implements IInputMethodManagerImpl.
     @GuardedBy("ImfLock.class")
     @SharedByAllUsersField
     private IntArray mStylusIds;
+
+    class SettingsObserver extends ContentObserver {
+        /**
+         * <em>This constructor must be called within the lock.</em>
+         */
+        SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        void registerContentObserverForAllUsers() {
+            ContentResolver resolver = mContext.getContentResolver();
+  
+            resolver.registerContentObserverAsUser(Settings.System.getUriFor(
+                    Settings.System.NAVIGATION_BAR_IME),
+                    false, this, UserHandle.ALL);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, @NonNull Collection<Uri> uris, int flags,
+                @UserIdInt int userId) {
+            uris.forEach(uri -> onChangeInternal(uri, userId));
+        }
+
+        private void onChangeInternal(@NonNull Uri uri, @UserIdInt int userId) {
+            final Uri navBarUri = Settings.System.getUriFor(
+                    Settings.System.NAVIGATION_BAR_IME);
+            synchronized (ImfLock.class) {
+                if (!mConcurrentMultiUserModeEnabled && mCurrentImeUserId != userId) {
+                    return;
+                }
+                if (navBarUri.equals(uri)) {
+                    onUpdateResourceOverlay(userId);
+                }
+            }
+        }
+    }
 
     private final ImeTracing.ServiceDumper mDumper = new ImeTracing.ServiceDumper() {
         /**
@@ -1319,10 +1360,9 @@ public final class InputMethodManagerService implements IInputMethodManagerImpl.
                     InputMethodSettingsRepository.put(userId, settings);
 
                     final int profileParentId = userManagerInternal.getProfileParentId(userId);
-                    final boolean value =
-                            InputMethodDrawsNavBarResourceMonitor.evaluate(context,
-                                    profileParentId);
-                    userData.mImeDrawsNavBar.set(value);
+                    final boolean showNavBarIme = Settings.System.getIntForUser(
+                        context.getContentResolver(), Settings.System.NAVIGATION_BAR_IME, 1, userId) == 1;
+                    userData.mImeDrawsNavBar.set(showNavBarIme);
 
                     userData.mBackgroundLoadLatch.countDown();
                     Slog.d(TAG, "Complete initialization for user=" + userId);
@@ -1415,6 +1455,8 @@ public final class InputMethodManagerService implements IInputMethodManagerImpl.
             mIoHandler = ioHandler;
             SystemLocaleWrapper.onStart(context, this::onActionLocaleChanged, mIoHandler);
             mImeTrackerService = new ImeTrackerService(mHandler);
+            // Note: SettingsObserver doesn't register observers in its constructor.
+            mSettingsObserver = new SettingsObserver(mHandler);
             mWindowManagerInternal = LocalServices.getService(WindowManagerInternal.class);
             mActivityManagerInternal = LocalServices.getService(ActivityManagerInternal.class);
             mPackageManagerInternal = LocalServices.getService(PackageManagerInternal.class);
@@ -1677,6 +1719,7 @@ public final class InputMethodManagerService implements IInputMethodManagerImpl.
                         bindingController.getBackDisposition(), mCurrentImeUserId);
 
                 mMyPackageMonitor.register(mContext, UserHandle.ALL, mIoHandler);
+                mSettingsObserver.registerContentObserverForAllUsers();
                 SecureSettingsChangeCallback.register(mHandler, mContext.getContentResolver(),
                         new String[] {
                                 Settings.Secure.ACCESSIBILITY_SOFT_KEYBOARD_MODE,
@@ -5691,13 +5734,13 @@ public final class InputMethodManagerService implements IInputMethodManagerImpl.
     @WorkerThread
     private void onUpdateResourceOverlay(@UserIdInt int userId) {
         final int profileParentId = mUserManagerInternal.getProfileParentId(userId);
-        final boolean value =
-                InputMethodDrawsNavBarResourceMonitor.evaluate(mContext, profileParentId);
         final var profileUserIds = mUserManagerInternal.getProfileIds(profileParentId, false);
+        final boolean showNavBarIme = Settings.System.getIntForUser(
+            mContext.getContentResolver(), Settings.System.NAVIGATION_BAR_IME, 1, userId) == 1;
         final ArrayList<UserData> updatedUsers = new ArrayList<>();
         for (int profileUserId : profileUserIds) {
             final var userData = getUserData(profileUserId);
-            userData.mImeDrawsNavBar.set(value);
+            userData.mImeDrawsNavBar.set(showNavBarIme);
             updatedUsers.add(userData);
         }
         synchronized (ImfLock.class) {
