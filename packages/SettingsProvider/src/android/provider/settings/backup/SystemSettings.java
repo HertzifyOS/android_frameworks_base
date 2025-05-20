@@ -137,7 +137,8 @@ public class SystemSettings {
                 Settings.System.STATUS_BAR_SHOW_BATTERY_PERCENT,
                 Settings.System.STATUS_BAR_BATTERY_STYLE,
                 Settings.System.ADVANCED_REBOOT,
-                Settings.System.NAVIGATION_BAR_HINT
+                Settings.System.NAVIGATION_BAR_HINT,
+                Settings.System.NAVIGATION_BAR_IME
         ));
         return settings.toArray(new String[0]);
     }
