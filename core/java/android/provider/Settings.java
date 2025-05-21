@@ -5861,6 +5861,7 @@ public final class Settings {
          *
          */
         /** {@hide} */
+        @Readable
         public static final String RINGTONE2 = "ringtone2";
 
         /**
