@@ -80,6 +80,7 @@ import android.view.IWindowManager;
 import android.view.MotionEvent;
 import android.view.ThreadedRenderer;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.WindowManagerGlobal;
@@ -142,6 +143,7 @@ import com.android.systemui.keyguard.KeyguardUnlockAnimationController;
 import com.android.systemui.keyguard.KeyguardViewMediator;
 import com.android.systemui.keyguard.ScreenLifecycle;
 import com.android.systemui.keyguard.WakefulnessLifecycle;
+import com.android.systemui.media.MediaViewController;
 import com.android.systemui.media.NotificationMediaManager;
 import com.android.systemui.navigationbar.NavigationBarController;
 import com.android.systemui.navigationbar.views.NavigationBarView;
@@ -469,6 +471,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
     private final WallpaperManager mWallpaperManager;
     private final UserTracker mUserTracker;
     private final ActivityStarter mActivityStarter;
+    private final MediaViewController mMediaViewController;
 
     private final GameSpaceManager mGameSpaceManager;
 
@@ -733,7 +736,8 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
             EmergencyGestureIntentFactory emergencyGestureIntentFactory,
             QuickAccessWalletController walletController,
             WindowManager windowManager,
-            WindowManagerProvider windowManagerProvider
+            WindowManagerProvider windowManagerProvider,
+            MediaViewController mediaViewController
     ) {
         mContext = context;
         mNotificationsController = notificationsController;
@@ -880,6 +884,7 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
 
         mWindowManager = windowManager;
         mWindowManagerProvider = windowManagerProvider;
+        mMediaViewController = mediaViewController;
     }
 
     private void initBubbles(Bubbles bubbles) {
@@ -1118,6 +1123,13 @@ public class CentralSurfacesImpl implements CoreStartable, CentralSurfaces {
                 (requestTopUi, componentTag) -> mMainExecutor.execute(
                         () -> mTopUiController.setRequestTopUi(requestTopUi, componentTag)
                 )));
+        getNotifContainerParentView().addView(mMediaViewController.getMediaArtScrim(), 0);
+    }
+
+    private ViewGroup getNotifContainerParentView() {
+        ViewGroup rootView = (ViewGroup) getNotificationShadeWindowView().findViewById(R.id.scrim_behind).getParent();
+        ViewGroup targetView = rootView.findViewById(R.id.notification_container_parent);
+        return targetView;
     }
 
     @VisibleForTesting
