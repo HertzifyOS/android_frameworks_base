@@ -23,6 +23,7 @@
     <string name="location_privacy_indicator_title">Location privacy indicator</string>
     <string name="projection_privacy_indicator_title">Media projection privacy indicator</string>
     <string name="status_bar_bluetooth_battery_title">Bluetooth battery status</string>
+    <string name="status_bar_settings_network_speed">Internet speed</string>
 
     <!-- Custom QS tiles -->
     <!-- Ambient display QS tile -->
