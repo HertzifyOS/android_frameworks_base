@@ -74,4 +74,7 @@
     <!-- Name of the NFC status bar icon. -->
     <string name="status_bar_nfc">NFC</string>
     <string name="accessibility_status_bar_nfc">Nfc</string>
+
+    <!-- QS button to enable adaptive brightness -->
+    <string name="accessibility_adaptive_brightness">Adaptive brightness</string>
 </resources>
