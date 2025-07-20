@@ -332,5 +332,7 @@ public class SecureSettings {
         Settings.Secure.DOZE_TAP_GESTURE_AMBIENT,
         Settings.Secure.DOZE_FOR_NOTIFICATIONS,
         Settings.Secure.VPN_ENFORCE_DNS,
+        Settings.Secure.QS_SHOW_BRIGHTNESS_SLIDER,
+        Settings.Secure.QS_BRIGHTNESS_SLIDER_POSITION,
     };
 }
