@@ -22,6 +22,9 @@ import static com.android.systemui.statusbar.phone.StatusBarIconHolder.TYPE_MOBI
 import static com.android.systemui.statusbar.phone.StatusBarIconHolder.TYPE_WIFI_NEW;
 
 import android.annotation.Nullable;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.UserHandle;
@@ -107,6 +110,7 @@ public class IconManager implements DemoModeCommandReceiver {
 
     private final boolean mNewIconStyle;
     private final boolean mShowNotificationCount;
+    private SettingsObserver mSettingsObserver;
 
     public IconManager(
             ViewGroup group,
@@ -131,6 +135,7 @@ public class IconManager implements DemoModeCommandReceiver {
             Settings.System.STATUSBAR_NOTIF_COUNT, 0,
             UserHandle.USER_CURRENT) == 1;
 
+        setupSettingsObserver();
         reloadDimens();
 
         // This starts the flow for the new pipeline, and will notify us of changes via
@@ -142,6 +147,39 @@ public class IconManager implements DemoModeCommandReceiver {
         mMobileUiAdapterKairos = mobileUiAdapterKairos;
 
         mWifiViewModel = wifiUiAdapter.bindGroup(mGroup, mLocation);
+    }
+
+    private void setupSettingsObserver() {
+        if (mSettingsObserver == null) {
+            mSettingsObserver = new SettingsObserver(new Handler());
+            mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.STATUSBAR_COLORED_ICONS),
+                false, mSettingsObserver, UserHandle.USER_ALL);
+            mContext.getContentResolver().registerContentObserver(
+                Settings.System.getUriFor(Settings.System.STATUSBAR_NOTIF_COUNT),
+                false, mSettingsObserver, UserHandle.USER_ALL);
+        }
+    }
+
+    private class SettingsObserver extends ContentObserver {
+        public SettingsObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            if (mController != null) {
+                mController.refreshIconGroup(IconManager.this);
+            }
+
+            for (int i = 0; i < mGroup.getChildCount(); i++) {
+                View child = mGroup.getChildAt(i);
+                if (child instanceof StatusBarIconView) {
+                    StatusBarIconView iconView = (StatusBarIconView) child;
+                    iconView.updateIconForced();
+                }
+            }
+        }
     }
 
     public boolean isDemoable() {
@@ -301,6 +339,10 @@ public class IconManager implements DemoModeCommandReceiver {
 
     protected void destroy() {
         mGroup.removeAllViews();
+        if (mSettingsObserver != null) {
+            mContext.getContentResolver().unregisterContentObserver(mSettingsObserver);
+            mSettingsObserver = null;
+        }
     }
 
     protected void reloadDimens() {
