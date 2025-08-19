@@ -6,4 +6,8 @@
 <resources>
     <!-- Default line spacing multiplier between hours and minutes of the keyguard clock -->
     <item name="keyguard_clock_line_spacing_scale" type="dimen" format="float">.7</item>
+
+    <!-- Blur radius used by SystemUI -->
+    <dimen name="min_window_blur_radius">1px</dimen>
+    <dimen name="max_window_blur_radius">17.5px</dimen>
 </resources>
