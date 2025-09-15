@@ -33,6 +33,7 @@ import com.android.systemui.qs.tiles.LocaleTile
 import com.android.systemui.qs.tiles.PreferredNetworkTile
 import com.android.systemui.qs.tiles.CompassTile
 import com.android.systemui.qs.tiles.VPNTetheringTile
+import com.android.systemui.qs.tiles.VolumeQSTile
 import com.android.systemui.qs.tiles.base.shared.model.QSTileConfig
 import com.android.systemui.qs.tiles.base.shared.model.QSTileUIConfig
 import com.android.systemui.res.R
@@ -123,6 +124,12 @@ interface HertzifyModule {
     @StringKey(VPNTetheringTile.TILE_SPEC)
     fun bindVPNTetheringTile(vpnTetheringTile: VPNTetheringTile): QSTileImpl<*>
 
+    /** Inject VolumeQSTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(VolumeQSTile.TILE_SPEC)
+    fun bindVolumeQSTile(volumeQSTile: VolumeQSTile): QSTileImpl<*>
+
     companion object {
         const val AMBIENT_DISPLAY_TILE_SPEC = "ambient_display"
         const val AOD_TILE_SPEC = "aod"
@@ -137,7 +144,8 @@ interface HertzifyModule {
         const val PREFERRED_NETWORK_TILE_SPEC = "preferred_network"
         const val COMPASS_TILE_SPEC = "compass"
         const val VPN_TETHERING_TILE_SPEC = "vpn_tethering"
-
+        const val VOLUME_TILE_SPEC = "volume"
+        
         @Provides
         @IntoMap
         @StringKey(AMBIENT_DISPLAY_TILE_SPEC)
@@ -331,6 +339,21 @@ interface HertzifyModule {
                     ),
                 instanceId = uiEventLogger.getNewInstanceId(),
                 category = TileCategory.CONNECTIVITY,
+            )
+
+        @Provides
+        @IntoMap
+        @StringKey(VOLUME_TILE_SPEC)
+        fun provideVolumeQSTile(uiEventLogger: QsEventLogger): QSTileConfig =
+            QSTileConfig(
+                tileSpec = TileSpec.create(VOLUME_TILE_SPEC),
+                uiConfig =
+                    QSTileUIConfig.Resource(
+                        iconRes = R.drawable.ic_volume_media,
+                        labelRes = R.string.quick_settings_volume_label
+                    ),
+                instanceId = uiEventLogger.getNewInstanceId(),
+                category = TileCategory.UTILITIES
             )
     }
 }
