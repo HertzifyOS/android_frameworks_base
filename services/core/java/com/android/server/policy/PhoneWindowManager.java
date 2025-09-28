@@ -412,7 +412,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
 
     private static final int POWER_BUTTON_SUPPRESSION_DELAY_DEFAULT_MILLIS = 800;
 
-    private static final long MEMORY_RELEASE_INTERVAL_MS = 10 * 60 * 1000L; // 10 minutes
+    private static final long MEMORY_RELEASE_INTERVAL_MS = 5 * 60 * 1000L; // 5 minutes
     private long lastMemoryReleaseTime = 0L;
 
     private static final long GC_INTERVAL_MS = 10 * 60 * 1000L; // 10 minutes
@@ -7360,8 +7360,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         long currentTime = System.currentTimeMillis();
         if (lastMemoryReleaseTime == 0L || currentTime - lastMemoryReleaseTime > MEMORY_RELEASE_INTERVAL_MS) {
             try {
-                ActivityManager.getService().releaseMemory(900, 20, false, false);
+                mActivityManagerService.releaseMemory(900, 25, false, false);
                 lastMemoryReleaseTime = currentTime;
+                Slog.d(TAG, "Performing screen-on memory reclaim.");
             } catch (RemoteException e) {
             }
         }
