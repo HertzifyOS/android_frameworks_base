@@ -123,6 +123,8 @@ public class ArcaneIdleManager {
 		        !RunningServices.get(i).pkgList[0].toString().contains(".gamespace") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".dolby.xiaomi") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".whatsapp") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".zalo") &&
+                !RunningServices.get(i).pkgList[0].toString().contains(".facebook") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".dialer") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".glyph") &&
                 !RunningServices.get(i).pkgList[0].toString().contains(".ims")) {
