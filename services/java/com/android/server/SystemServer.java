@@ -184,6 +184,7 @@ import com.android.server.gpu.GpuService;
 import com.android.server.grammaticalinflection.GrammaticalInflectionService;
 import com.android.server.graphics.fonts.FontManagerService;
 import com.android.server.hdmi.HdmiControlService;
+import com.android.server.hertzify.VbmetaHashService;
 import com.android.server.incident.IncidentCompanionService;
 import com.android.server.input.InputManagerService;
 import com.android.server.inputmethod.InputMethodManagerService;
@@ -2936,6 +2937,10 @@ public final class SystemServer implements Dumpable {
             // AttestationService
             t.traceBegin("AttestationService");
             mSystemServiceManager.startService(AttestationService.class);
+
+            // VbmetaHashService
+            t.traceBegin("VbmetaHashService");
+            mSystemServiceManager.startService(VbmetaHashService.class);
             t.traceEnd();
         }
 
