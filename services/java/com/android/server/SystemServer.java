@@ -185,6 +185,7 @@ import com.android.server.grammaticalinflection.GrammaticalInflectionService;
 import com.android.server.graphics.fonts.FontManagerService;
 import com.android.server.hdmi.HdmiControlService;
 import com.android.server.incident.IncidentCompanionService;
+import com.android.server.ims.ImsConfigOverrideService;
 import com.android.server.input.InputManagerService;
 import com.android.server.inputmethod.InputMethodManagerService;
 import com.android.server.integrity.AppIntegrityManagerService;
@@ -2929,6 +2930,12 @@ public final class SystemServer implements Dumpable {
             t.traceBegin("HideAppListService");
             mSystemServiceManager.startService(HideAppListService.class);
             t.traceEnd();
+
+            // ImsConfigOverrideService
+            boolean imsOverrideEnabled = SystemProperties.getBoolean("persist.sys.target_enables_ims_override", false);
+            if (imsOverrideEnabled) {
+                mSystemServiceManager.startService(ImsConfigOverrideService.class);
+            }
         }
 
         t.traceBegin("StartMediaProjectionManager");
