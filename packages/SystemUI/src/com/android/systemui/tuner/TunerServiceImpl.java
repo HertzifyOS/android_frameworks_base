@@ -54,6 +54,7 @@ import dagger.Lazy;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import javax.inject.Inject;
 
@@ -310,7 +311,7 @@ public class TunerServiceImpl extends TunerService {
 
     private void addTunable(Tunable tunable, String key) {
         if (!mTunableLookup.containsKey(key)) {
-            mTunableLookup.put(key, new ArraySet<Tunable>());
+            mTunableLookup.put(key, new CopyOnWriteArraySet<Tunable>());
         }
         mTunableLookup.get(key).add(tunable);
         if (LeakDetector.ENABLED) {
