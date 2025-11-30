@@ -7364,6 +7364,11 @@ public final class Settings {
         public static final String DISABLE_STACKED_MOBILE_ICONS = "disable_stacked_mobile_icons";
 
         /**
+         * @hide
+         */
+        public static final String SINGLE_QS_TONE_ENABLED = "single_qs_tone_enabled";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
