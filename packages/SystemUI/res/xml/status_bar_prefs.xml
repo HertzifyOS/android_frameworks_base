@@ -189,10 +189,9 @@
         android:key="clock"
         android:title="@string/clock" />
         
-    <com.android.systemui.tuner.BatteryPreference
+    <com.android.systemui.tuner.StatusBarSwitch
         android:icon="@*android:drawable/ic_battery"
-        android:title="@string/battery"
-        android:summary="%s"
-        android:entries="@array/battery_options" />
+        android:key="battery"
+        android:title="@string/battery" />
 </PreferenceScreen>
 
