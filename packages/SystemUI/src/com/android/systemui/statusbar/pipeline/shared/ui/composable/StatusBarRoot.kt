@@ -100,8 +100,8 @@ import com.android.systemui.statusbar.phone.ui.DarkIconManager
 import com.android.systemui.statusbar.phone.ui.StatusBarIconController
 import com.android.systemui.statusbar.phone.ui.TintedIconManager
 import com.android.systemui.statusbar.pipeline.battery.ui.composable.BatteryWithChargeStatus
+import com.android.systemui.statusbar.pipeline.battery.ui.composable.BatteryWithPercent
 import com.android.systemui.statusbar.pipeline.battery.ui.composable.ShowPercentMode
-import com.android.systemui.statusbar.pipeline.battery.ui.composable.UnifiedBattery
 import com.android.systemui.statusbar.pipeline.battery.ui.viewmodel.BatteryViewModel
 import com.android.systemui.statusbar.pipeline.shared.ui.binder.HomeStatusBarIconBlockListBinder
 import com.android.systemui.statusbar.pipeline.shared.ui.binder.HomeStatusBarTouchExclusionRegionBinder
@@ -119,6 +119,9 @@ import javax.inject.Inject
 import javax.inject.Named
 import kotlinx.coroutines.DisposableHandle
 import kotlinx.coroutines.awaitCancellation
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.collect
 
 /** Factory to simplify the dependency management for [StatusBarRoot] */
 @PerDisplaySingleton
@@ -548,6 +551,8 @@ fun chipsMaxWidth(
     return (widthInPx / density).dp
 }
 
+private const val SLOT_BATTERY = "battery"
+
 /** Create a new [UnifiedBattery] and add it to the end of the system_icons container */
 private fun addBatteryComposable(
     phoneStatusBarView: PhoneStatusBarView,
@@ -572,17 +577,27 @@ private fun addBatteryComposable(
                         rememberViewModel(traceName = "UnifiedBattery") {
                             statusBarViewModel.unifiedBatteryViewModel.create()
                         }
-                    UnifiedBattery(
+                    BatteryWithPercent(
                         modifier =
-                            Modifier.sysUiResTagContainer().height(height).wrapContentWidth(),
+                            Modifier.sysUiResTagContainer().wrapContentWidth(),
                         viewModel = viewModel,
                         isDarkProvider = { statusBarViewModel.areaDark },
+                        showPercent = viewModel.isBatteryPercentSettingEnabled,
                     )
                 }
             }
         }
     phoneStatusBarView.findViewById<ViewGroup>(R.id.system_icons).apply {
         addView(batteryComposeView, -1)
+    }
+
+    batteryComposeView.repeatWhenAttached {
+        statusBarViewModel.iconBlockList
+            .map { blocked -> blocked.contains(SLOT_BATTERY) }
+            .distinctUntilChanged()
+            .collect { isBlocked ->
+                batteryComposeView.visibility = if (isBlocked) View.GONE else View.VISIBLE
+            }
     }
 }
 
@@ -630,11 +645,12 @@ private fun addEndSideComposable(
                             rememberViewModel(traceName = "UnifiedBattery") {
                                 statusBarViewModel.unifiedBatteryViewModel.create()
                             }
-                        UnifiedBattery(
+                        BatteryWithPercent(
                             viewModel = viewModel,
                             isDarkProvider = { statusBarViewModel.areaDark },
                             modifier =
-                                Modifier.sysUiResTagContainer().height(height).wrapContentWidth(),
+                                Modifier.sysUiResTagContainer().wrapContentWidth(),
+                            showPercent = viewModel.isBatteryPercentSettingEnabled,
                         )
                     }
                 }
