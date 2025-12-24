@@ -19,4 +19,10 @@ public interface AxSpoofManagerInternal {
     String getPifConfig();
 
     String getPifSpoofPhotos();
+
+    String getTrickyStoreTarget();
+
+    String getTrickyStoreKeyBox();
+
+    String getTrickyStorePatch();
 }
