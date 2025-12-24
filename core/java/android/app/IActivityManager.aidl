@@ -1082,4 +1082,10 @@ interface IActivityManager {
     String getSpoofPifConfig();
 
     String getSpoofPifSpoofPhotos();
+
+    String getSpoofTrickyStoreTarget();
+
+    String getSpoofTrickyStoreKeyBox();
+    
+    String getSpoofTrickyStorePatch();
 }
