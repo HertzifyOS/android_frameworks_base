@@ -19,4 +19,10 @@ public interface SpoofManagerInternal {
     String getPifConfig();
 
     String getPifSpoofPhotos();
+
+    String getTrickyStoreTarget();
+
+    String getTrickyStoreKeyBox();
+
+    String getTrickyStorePatch();
 }
