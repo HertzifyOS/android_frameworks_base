@@ -1088,4 +1088,6 @@ interface IActivityManager {
     String getSpoofTrickyStoreKeyBox();
     
     String getSpoofTrickyStorePatch();
+
+    String getSpoofAppPropsConfig();
 }
