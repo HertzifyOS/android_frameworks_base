@@ -38,6 +38,7 @@ public final class AxSpoofManagerService extends SystemService {
             Settings.Secure.SPOOF_TRICKYSTORE_TARGET,
             Settings.Secure.SPOOF_TRICKYSTORE_KEYBOX,
             Settings.Secure.SPOOF_TRICKYSTORE_PATCH,
+            Settings.Secure.SPOOF_APPPROPS_CONFIG,
     };
 
     private final ContentResolver mResolver;
@@ -145,6 +146,11 @@ public final class AxSpoofManagerService extends SystemService {
         @Override
         public String getTrickyStorePatch() {
             return getCached(Settings.Secure.SPOOF_TRICKYSTORE_PATCH);
+        }
+
+        @Override
+        public String getAppPropsConfig() {
+            return getCached(Settings.Secure.SPOOF_APPPROPS_CONFIG);
         }
     }
 }

@@ -25,4 +25,6 @@ public interface AxSpoofManagerInternal {
     String getTrickyStoreKeyBox();
 
     String getTrickyStorePatch();
+
+    String getAppPropsConfig();
 }
