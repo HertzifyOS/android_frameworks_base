@@ -14572,6 +14572,11 @@ public final class Settings {
         public static final String BERRY_BLACK_THEME = "berry_black_theme";
         
         /**
+         * @hide
+         */
+        public static final String SPOOF_PIF_CONFIG = "spoof_pif_config";
+
+        /**
          * These entries are considered common between the personal and the managed profile,
          * since the managed profile doesn't get to change them.
          */
