@@ -191,6 +191,7 @@ import android.se.omapi.SeFrameworkInitializer;
 import android.se.omapi.SeServiceManager;
 import android.security.NetworkSecurityPolicy;
 import android.security.net.config.NetworkSecurityConfigProvider;
+import android.security.appprops.AppPropsSpoofService;
 import android.security.pif.PlayIntegritySpoofService;
 import android.system.ErrnoException;
 import android.telephony.TelephonyFrameworkInitializer;
@@ -8020,6 +8021,11 @@ public final class ActivityThread extends ClientTransactionHandler
         final IActivityManager mgr = ActivityManager.getService();
         final ContextImpl appContext = ContextImpl.createAppContext(this, data.info);
         mConfigurationController.updateLocaleListFromAppContext(appContext);
+
+        AppPropsSpoofService appPropsService = AppPropsSpoofService.getInstance();
+        if (appPropsService.isEnabled()) {
+            appPropsService.spoofForPackage(data.appInfo.packageName);
+        }
 
         PlayIntegritySpoofService pifService = PlayIntegritySpoofService.getInstance();
         if (pifService.shouldSpoof(data.processName)) {
