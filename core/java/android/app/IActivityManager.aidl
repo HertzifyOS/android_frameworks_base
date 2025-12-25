@@ -1078,4 +1078,6 @@ interface IActivityManager {
     void unregisterAnrWarningListener(in IAnrWarningCallback callback);
 
     void releaseMemory(int minAdj, int maxKillCount, boolean includeUIProcesses, boolean skipCamera);
+
+    String getSpoofPifConfig();
 }
