@@ -1523,11 +1523,14 @@ fun QuickQuickSettingsLayout(
             }
         } else {
             tiles()
-            media()
         }
 
         if (showSlider == 2 && !sliderAtTop) {
             brightness()
+        }
+
+        if (!mediaInRow) {
+            media()
         }
     }
 }
@@ -1563,9 +1566,13 @@ fun QuickSettingsLayout(
             }
         } else {
             tiles()
-            if (showSlider != 0 && !sliderAtTop) {
-                brightness()
-            }
+        }
+
+        if (showSlider != 0 && !sliderAtTop) {
+            brightness()
+        }
+
+        if (!mediaInRow) {
             media()
         }
     }
