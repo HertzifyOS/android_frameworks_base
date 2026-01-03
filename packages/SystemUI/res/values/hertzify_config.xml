@@ -85,4 +85,10 @@
 
     <!-- Whether to disable Smart Pixels on UDFPS -->
     <bool name="config_disableSmartPixelsOnUDFPS">false</bool>
+
+    <!-- Whether to enable MediaTek-specific optical dimming for UDFPS -->
+    <bool name="config_udfpsMtkGhbmDimming">false</bool>
+
+    <!-- Name of the UDFPS HBM DimLayer for the HWComposer -->
+    <string name="config_udfpsHbmDimLayer" translatable="false">OnScreenFingerprintDimLayer</string>
 </resources>
