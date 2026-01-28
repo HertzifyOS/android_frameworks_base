@@ -27,4 +27,10 @@
 
     <!-- Lockscreen clock -->
     <dimen name="custom_clock_frame_margin_top">0dp</dimen>
+
+    <!-- Sb Chip -->
+    <dimen name="chip_corner_radius">28dp</dimen>
+    <dimen name="status_bar_clock_chip_tb_padding">0dp</dimen>
+    <dimen name="status_bar_clock_chip_lr_padding">8dp</dimen>
+    
 </resources>
