@@ -202,5 +202,8 @@
     <!-- Kill button in notification guts -->
     <string name="force_stop_dlg_title">Force stop?</string>
     <string name="force_stop_dlg_text">If you force stop an app, it may misbehave.</string>
-    
+
+   <!-- Disable stacked mobile icons -->
+    <string name="disable_stacked_mobile_icons_title">Disable combined data icon</string>
+
 </resources>
