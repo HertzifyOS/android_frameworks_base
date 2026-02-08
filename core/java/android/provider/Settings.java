@@ -7380,6 +7380,11 @@ public final class Settings {
                 "notification_guts_kill_app_button";
 
         /**
+         * @hide
+         */
+        public static final String DISABLE_STACKED_MOBILE_ICONS = "disable_stacked_mobile_icons";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
