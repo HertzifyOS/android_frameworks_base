@@ -135,12 +135,6 @@
         android:key="vpn"
         android:title="@string/legacy_vpn_name" />
 
-    <com.android.systemui.tuner.BatteryPreference
-        android:icon="@*android:drawable/ic_battery"
-        android:title="@string/battery"
-        android:summary="%s"
-        android:entries="@array/battery_options" />
-
     <com.android.systemui.tuner.StatusBarSwitch
         android:key="nfc"
         android:persistent="false"
@@ -154,18 +148,6 @@
 
     <!-- secure -->
 
-    <com.android.systemui.tuner.ClockPreference
-        android:icon="@drawable/ic_statusbar_clock"
-        android:title="@string/tuner_time"
-        android:summary="%s"
-        android:entries="@array/clock_options" />
-
-    <com.android.systemui.tuner.TunerSwitch
-        android:icon="@drawable/ic_statusbar_priority"
-        android:key="low_priority"
-        android:title="@string/tuner_low_priority"
-        sysui:defValue="false" />
-
     <com.android.systemui.tuner.TunerSwitch
         android:icon="@drawable/ic_statusbar_data_disabled"
         android:key="system:data_disabled_icon"
@@ -177,5 +159,23 @@
         android:key="system:show_fourg_icon"
         android:title="@string/show_fourg_icon_title"
         sysui:defValue="false" />
+
+    <com.android.systemui.tuner.TunerSwitch
+        android:icon="@drawable/ic_statusbar_priority"
+        android:key="low_priority"
+        android:title="@string/tuner_low_priority"
+        sysui:defValue="false" />
+
+    <com.android.systemui.tuner.BatteryPreference
+        android:icon="@*android:drawable/ic_battery"
+        android:title="@string/battery"
+        android:summary="%s"
+        android:entries="@array/battery_options" />
+
+    <com.android.systemui.tuner.ClockPreference
+        android:icon="@drawable/ic_statusbar_clock"
+        android:title="@string/tuner_time"
+        android:summary="%s"
+        android:entries="@array/clock_options" />
 </PreferenceScreen>
 
