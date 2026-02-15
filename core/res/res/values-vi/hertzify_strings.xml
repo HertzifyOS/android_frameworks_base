@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2025 HertzifyOS
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <!-- Button that copies the url to the log of a crashed application -->
+    <string name="aerr_copy">Sao chép URL nhật ký sự cố</string>
+    <string name="url_copy_success">Đã sao chép URL thành công</string>
+    <string name="url_copy_failed">Đã xảy ra lỗi khi tải nhật ký lên mkr/bin</string>
+
+    <!-- Settings Restart -->
+    <string name="settings_restart_title">Cần khởi động lại Cài đặt</string>
+    <string name="settings_restart_message">Để tất cả thay đổi có hiệu lực, cần khởi động lại ứng dụng Cài đặt. Khởi động lại ngay bây giờ?</string>
+
+    <!-- System Reboot -->
+    <string name="system_restart_title">Cần khởi động lại hệ thống</string>
+    <string name="system_restart_message">Để tất cả thay đổi có hiệu lực, cần khởi động lại hệ thống. Khởi động lại hệ thống ngay bây giờ?</string>
+
+    <!-- SystemUI Restart -->
+    <string name="systemui_restart_title">Cần khởi động lại SystemUI</string>
+    <string name="systemui_restart_message">Để tất cả thay đổi có hiệu lực, cần khởi động lại SystemUI. Khởi động lại SystemUI ngay bây giờ?</string>
+
+    <!-- Launcher Restart -->
+    <string name="launcher_restart_title">Cần khởi động lại Launcher</string>
+    <string name="launcher_restart_message">Để tất cả thay đổi có hiệu lực, cần khởi động lại Launcher. Khởi động lại Launcher ngay bây giờ?</string>
+
+     <!-- Lock gesture -->
+     <string name="gesture_locked_warning">Vuốt lại lần nữa để mở khóa cử chỉ</string>
+
+     <!-- GameSpace -->
+    <string name="gamespace_new_game_added"><xliff:g id="name" example="MyApp">%s</xliff:g> đã được thêm vào GameSpace</string>
+
+    <!-- App lock -->
+    <string name="unlock_application">Mở khóa <xliff:g id="label" example="Telegram">%1$s</xliff:g></string>
+
+    <!-- Health interface -->
+    <string name="charging_control_notification_channel">Kiểm soát sạc</string>
+    <string name="charging_control_notification_title">Kiểm soát sạc</string>
+    <string name="charging_control_notification_cancel_once">Hủy</string>
+    <string name="charging_control_notification_content_limit">Pin sẽ được sạc đến %1$d%%</string>
+    <string name="charging_control_notification_content_limit_reached">Pin đã được sạc đến %1$d%%</string>
+    <string name="charging_control_notification_content_target">Pin sẽ được sạc đầy vào lúc %1$s</string>
+    <string name="charging_control_notification_content_target_reached">Pin đã được sạc đầy</string>
+
+    <!-- Charging speed strings -->
+    <string name="charging_speed">Tốc độ sạc</string>
+    <string name="charging_speed_slow">Chậm</string>
+    <string name="charging_speed_fast">Nhanh</string>
+    <string name="charging_speed_super_fast">Siêu nhanh</string>
+
+    <!-- LiveDisplay strings -->
+    <string name="live_display_title" translatable="false">LiveDisplay</string>
+    <string name="live_display_auto">Tự động</string>
+    <string name="live_display_auto_summary">Tự động điều chỉnh nhiệt độ màu màn hình sau khi mặt trời lặn và mọc</string>
+    <string name="live_display_off">Tắt</string>
+    <string name="live_display_off_summary">Tắt tất cả các điều chỉnh</string>
+    <string name="live_display_day">Ban ngày</string>
+    <string name="live_display_day_summary">Chỉ sử dụng cài đặt ban ngày</string>
+    <string name="live_display_night">Ban đêm</string>
+    <string name="live_display_night_summary">Chỉ sử dụng cài đặt ban đêm</string>
+    <string name="live_display_outdoor">Ngoài trời (ánh nắng mạnh)</string>
+    <string name="live_display_outdoor_summary">Chỉ sử dụng cài đặt ngoài trời</string>
+    <string name="live_display_hint">LiveDisplay có thể giúp giảm mỏi mắt và giúp bạn ngủ ngon hơn vào ban đêm. Nhấn vào đây để thử!</string>
+    <string name="accessibility_quick_settings_live_display_off">LiveDisplay đã tắt.</string>
+    <string name="accessibility_quick_settings_live_display_auto">LiveDisplay: chế độ tự động.</string>
+    <string name="accessibility_quick_settings_live_display_day">LiveDisplay: chế độ ban ngày.</string>
+    <string name="accessibility_quick_settings_live_display_night">LiveDisplay: chế độ ban đêm.</string>
+    <string name="accessibility_quick_settings_live_display_outdoor">LiveDisplay: chế độ ngoài trời.</string>
+    <string name="accessibility_quick_settings_live_display_changed_off">LiveDisplay đã được tắt.</string>
+    <string name="accessibility_quick_settings_live_display_changed_auto">LiveDisplay đã chuyển sang chế độ tự động.</string>
+    <string name="accessibility_quick_settings_live_display_changed_day">LiveDisplay đã chuyển sang chế độ ban ngày.</string>
+    <string name="accessibility_quick_settings_live_display_changed_night">LiveDisplay đã chuyển sang chế độ ban đêm.</string>
+    <string name="accessibility_quick_settings_live_display_changed_outdoor">LiveDisplay đã chuyển sang chế độ ngoài trời.</string>
+
+    <!-- Pocket Lock -->
+    <string name="pocket_mode_title">Chế độ bỏ túi đang hoạt động</string>
+    <string name="pocket_mode_illustration_description">Hình minh họa điện thoại trong túi</string>
+    <string name="pocket_mode_instructions_header">Để sử dụng điện thoại:</string>
+    <string name="pocket_mode_instruction_step1">1. Đảm bảo vùng màu xanh (cảm biến tiệm cận) hiển thị phía trên không bị che khuất và không có bụi bẩn.</string>
+    <string name="pocket_mode_instruction_step2">2. Nhấn và giữ nút nguồn để thoát chế độ bỏtúi.</string>
+</resources>
