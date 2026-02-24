@@ -77,6 +77,7 @@ constructor(
     private val notificationManager: NotificationManager,
     private val settingsInteractor: NotificationSettingsInteractor,
     private val deviceProvisioningInteractor: DeviceProvisioningInteractor,
+    private val DynamicBarSettings: com.android.systemui.dynamicbar.domain.DynamicBarSettings,
 ) : VisualInterruptionDecisionProvider {
 
     interface Loggable {
@@ -162,6 +163,7 @@ constructor(
         check(!started)
 
         addCondition(PeekDisabledSuppressor(globalSettings, headsUpManager, logger, mainHandler))
+        addCondition(PeekDynamicBarSuppressor(DynamicBarSettings))
         addCondition(PulseDisabledSuppressor(ambientDisplayConfiguration, userTracker))
         addCondition(PulseBatterySaverSuppressor(batteryController))
         addFilter(PeekPackageSnoozedSuppressor(headsUpManager))
