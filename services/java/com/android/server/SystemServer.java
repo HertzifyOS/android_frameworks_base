@@ -207,6 +207,7 @@ import com.android.server.musicrecognition.MusicRecognitionManagerService;
 import com.android.server.net.NetworkManagementService;
 import com.android.server.net.NetworkPolicyManagerService;
 import com.android.server.net.watchlist.NetworkWatchlistService;
+import com.android.server.hertzify.AttestationService;
 import com.android.server.notification.NotificationManagerService;
 import com.android.server.oemlock.OemLockService;
 import com.android.server.om.OverlayManagerService;
@@ -2930,6 +2931,11 @@ public final class SystemServer implements Dumpable {
             // LiveDisplay
             t.traceBegin("StartLiveDisplayService");
             mSystemServiceManager.startService(LiveDisplayService.class);
+            t.traceEnd();
+
+            // AttestationService
+            t.traceBegin("AttestationService");
+            mSystemServiceManager.startService(AttestationService.class);
             t.traceEnd();
         }
 

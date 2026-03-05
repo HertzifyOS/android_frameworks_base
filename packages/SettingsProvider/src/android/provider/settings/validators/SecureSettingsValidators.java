@@ -532,5 +532,10 @@ public class SecureSettingsValidators {
         VALIDATORS.put(Secure.FEATURE_TOUCH_HOVERING, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.VPN_ENFORCE_DNS, BOOLEAN_VALIDATOR);
         VALIDATORS.put(Secure.VPN_ENFORCE_DNS_STORE, new DiscreteValueValidator(new String[] {"-1", "0", "1", "2"}));
+        VALIDATORS.put(Secure.PI_ENABLE_SPOOF, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.PIF_DATA, ANY_STRING_VALIDATOR);
+        VALIDATORS.put(Secure.FETCHED_PIF, ANY_STRING_VALIDATOR);
+        VALIDATORS.put(Secure.PI_PIXEL_SPOOF, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.PI_PHOTOS_SPOOF, BOOLEAN_VALIDATOR);
     }
 }

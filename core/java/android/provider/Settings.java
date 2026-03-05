@@ -13855,6 +13855,41 @@ public final class Settings {
         public static final String DOZE_ON_CHARGE = "doze_on_charge";
 
         /**
+         * Whether to use PIF spoof for google apps
+         * @hide
+         */
+        @Readable
+        public static final String PI_ENABLE_SPOOF = "pi_enable_spoof";
+
+        /**
+         * User selectable PIF data.
+         * @hide
+         */
+        @Readable
+        public static final String PIF_DATA = "pif_data";
+
+        /**
+         * PIF data fetched from our repo.
+         * @hide
+         */
+        @Readable
+        public static final String FETCHED_PIF = "fetched_pif";
+
+        /**
+         * Whether to use PIF spoof for some apps as recent pixel
+         * @hide
+         */
+        @Readable
+        public static final String PI_PIXEL_SPOOF = "pi_pixel_spoof";
+
+        /**
+         * Whether to use PIF spoof for photos
+         * @hide
+         */
+        @Readable
+        public static final String PI_PHOTOS_SPOOF = "pi_photos_spoof";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
