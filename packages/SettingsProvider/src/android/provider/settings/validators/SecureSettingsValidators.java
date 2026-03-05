@@ -532,5 +532,10 @@ public class SecureSettingsValidators {
                 new InclusiveIntegerRangeValidator(0, 2));
         VALIDATORS.put(Secure.HIDE_DEVELOPER_STATUS, ANY_STRING_VALIDATOR);
         VALIDATORS.put(Secure.HIDE_APPLIST, ANY_STRING_VALIDATOR);
+        VALIDATORS.put(Secure.PI_ENABLE_SPOOF, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.PIF_DATA, ANY_STRING_VALIDATOR);
+        VALIDATORS.put(Secure.FETCHED_PIF, ANY_STRING_VALIDATOR);
+        VALIDATORS.put(Secure.PI_PIXEL_SPOOF, BOOLEAN_VALIDATOR);
+        VALIDATORS.put(Secure.PI_PHOTOS_SPOOF, BOOLEAN_VALIDATOR);
     }
 }
