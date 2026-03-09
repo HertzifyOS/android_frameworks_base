@@ -36,6 +36,7 @@ import com.android.systemui.qs.tiles.VPNTetheringTile
 import com.android.systemui.qs.tiles.base.shared.model.QSTileConfig
 import com.android.systemui.qs.tiles.base.shared.model.QSTileUIConfig
 import com.android.systemui.res.R
+import com.android.systemui.smartpixel.ui.SmartPixelTile
 
 import dagger.Binds
 import dagger.Module
@@ -123,6 +124,12 @@ interface HertzifyModule {
     @StringKey(VPNTetheringTile.TILE_SPEC)
     fun bindVPNTetheringTile(vpnTetheringTile: VPNTetheringTile): QSTileImpl<*>
 
+    /** Inject SmartPixelTile into tileMap in QSModule */
+    @Binds
+    @IntoMap
+    @StringKey(SmartPixelTile.TILE_SPEC)
+    abstract fun bindSmartPixelTile(tile: SmartPixelTile): QSTileImpl<*>
+
     companion object {
         const val AMBIENT_DISPLAY_TILE_SPEC = "ambient_display"
         const val AOD_TILE_SPEC = "aod"
@@ -137,6 +144,7 @@ interface HertzifyModule {
         const val PREFERRED_NETWORK_TILE_SPEC = "preferred_network"
         const val COMPASS_TILE_SPEC = "compass"
         const val VPN_TETHERING_TILE_SPEC = "vpn_tethering"
+        const val SMART_PIXELS_TILE_SPEC = "smart_pixels"
 
         @Provides
         @IntoMap
@@ -331,6 +339,21 @@ interface HertzifyModule {
                     ),
                 instanceId = uiEventLogger.getNewInstanceId(),
                 category = TileCategory.CONNECTIVITY,
+            )
+
+        @Provides
+        @IntoMap
+        @StringKey(SMART_PIXELS_TILE_SPEC)
+        fun provideSmartPixelsTileConfig(uiEventLogger: QsEventLogger): QSTileConfig =
+            QSTileConfig(
+                tileSpec = TileSpec.create(SMART_PIXELS_TILE_SPEC),
+                uiConfig =
+                    QSTileUIConfig.Resource(
+                        iconRes = R.drawable.qs_smart_pixels_icon_off,
+                        labelRes = R.string.quick_settings_smart_pixels_label,
+                    ),
+                instanceId = uiEventLogger.getNewInstanceId(),
+                category = TileCategory.DISPLAY,
             )
     }
 }
