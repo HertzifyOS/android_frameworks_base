@@ -13897,6 +13897,34 @@ public final class Settings {
         public static final String KEYBOX_DATA = "keybox_data";
         
         /**
+         * Whether app Build property spoofing is enabled.
+         * @hide
+         */
+        @Readable
+        public static final String APP_SPOOF_ENABLED = "app_spoof_enabled";
+
+        /**
+         * Per-app Build property spoof data (JSON object).
+         * @hide
+         */
+        @Readable
+        public static final String APP_SPOOF_DATA = "app_spoof_data";
+
+        /**
+         * User-saved spoof presets (JSON array).
+         * @hide
+         */
+        @Readable
+        public static final String APP_SPOOF_PRESETS = "app_spoof_presets";
+
+        /**
+         * Whether to show uninstalled apps in the spoof manager UI.
+         * @hide
+         */
+        @Readable
+        public static final String APP_SPOOF_SHOW_UNINSTALLED = "hertzify_app_spoof_show_uninstalled";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *

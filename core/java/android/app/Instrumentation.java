@@ -70,6 +70,7 @@ import android.view.Window;
 import android.view.WindowManagerGlobal;
 
 import com.android.internal.content.ReferrerIntent;
+import com.android.internal.util.hertzify.AppSpoofUtils;
 import com.android.internal.util.hertzify.PixelPropsUtils;
 
 import java.io.File;
@@ -1360,6 +1361,7 @@ public class Instrumentation {
         Application app = getFactory(context.getPackageName())
                 .instantiateApplication(cl, className);
         app.attach(context);
+        AppSpoofUtils.setProps(context);
         PixelPropsUtils.setProps(context);
         return app;
     }
