@@ -121,6 +121,21 @@
         android:key="roaming"
         android:title="@string/status_bar_roaming" />
 
+    <com.android.systemui.tuner.StatusBarSwitch
+        android:key="volte"
+        android:title="@string/status_bar_volte_icon_title"
+        android:icon="@drawable/ic_statusbar_volte_tuner" />
+
+    <com.android.systemui.tuner.StatusBarSwitch
+        android:key="vonr"
+        android:title="@string/status_bar_vonr_icon_title"
+        android:icon="@drawable/ic_statusbar_vonr_tuner" />
+
+    <com.android.systemui.tuner.StatusBarSwitch
+        android:key="vowifi"
+        android:title="@string/status_bar_vowifi_icon_title"
+        android:icon="@drawable/ic_statusbar_vowifi_tuner" />
+
     <!-- other weird signal stuff -->
 
     <com.android.systemui.tuner.StatusBarSwitch
