@@ -174,4 +174,9 @@
     <string name="config_pocketJudgeVendorSensorName"></string>
     <item name="config_pocketJudgeVendorSensorValue" format="float" type="dimen">1.0</item>
     <string name="config_pocketJudgeVendorProximitySensorName"></string>
+
+    <!-- AttestationService (Pif URL) -->
+    <string name="config_attestationServiceApiUrl" translatable="false">
+    https://raw.githubusercontent.com/HertzifyOS/android_vendor_spoof/refs/heads/main/gms_certified_props.json
+    </string>
 </resources>

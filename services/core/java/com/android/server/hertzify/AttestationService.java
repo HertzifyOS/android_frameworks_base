@@ -34,7 +34,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public final class AttestationService extends SystemService {
 
     private static final String TAG = AttestationService.class.getSimpleName();
-    private static final String API = "https://raw.githubusercontent.com/HertzifyOS/android_vendor_spoof/refs/heads/main/gms_certified_props.json";
 
     private static final long INITIAL_DELAY = 0;
     private static final long INTERVAL = 8; // hours
@@ -42,6 +41,7 @@ public final class AttestationService extends SystemService {
     private static final boolean DEBUG = Log.isLoggable(TAG, Log.DEBUG);
 
     private final Context mContext;
+    private final String mApiUrl;
     private final ScheduledExecutorService mScheduler;
     private final ConnectivityManager mConnectivityManager;
     private final FetchGmsCertifiedProps mFetchRunnable;
@@ -53,6 +53,8 @@ public final class AttestationService extends SystemService {
     public AttestationService(Context context) {
         super(context);
         mContext = context;
+        mApiUrl = mContext.getString(
+                com.android.internal.R.string.config_attestationServiceApiUrl);
         mFetchRunnable = new FetchGmsCertifiedProps();
         mScheduler = Executors.newSingleThreadScheduledExecutor();
         mConnectivityManager =
@@ -76,7 +78,7 @@ public final class AttestationService extends SystemService {
     private String fetchProps() {
         HttpURLConnection urlConnection = null;
         try {
-            URL url = new URI(API).toURL();
+            URL url = new URI(mApiUrl).toURL();
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setConnectTimeout(10000);
             urlConnection.setReadTimeout(10000);
