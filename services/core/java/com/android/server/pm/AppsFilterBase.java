@@ -327,6 +327,22 @@ public abstract class AppsFilterBase implements AppsFilterSnapshot {
      * {@link AppsFilterSnapshot#shouldFilterApplication(PackageDataSnapshot, int, Object,
      * PackageStateInternal, int)}
      */
+    private static boolean isRomPackage(String pkg) {
+        return pkg.startsWith("org.lineageos.")
+                || pkg.startsWith("org.omnirom.")
+                || pkg.startsWith("org.protonaosp.")
+                || pkg.startsWith("co.aospa.")
+                || pkg.startsWith("io.chaldeaprjkt.")
+                || pkg.startsWith("com.libremobileos.");
+    }
+
+    private static boolean isCallerSystemApp(Object callingSetting) {
+        if (callingSetting instanceof PackageStateInternal) {
+            return ((PackageStateInternal) callingSetting).isSystem();
+        }
+        return true;
+    }
+
     @Override
     public boolean shouldFilterApplication(PackageDataSnapshot snapshot, int callingUid,
             @Nullable Object callingSetting, PackageStateInternal targetPkgSetting, int userId) {
@@ -335,6 +351,12 @@ public abstract class AppsFilterBase implements AppsFilterSnapshot {
         }
         try {
             int callingAppId = UserHandle.getAppId(callingUid);
+            String targetPkg = targetPkgSetting.getPackageName();
+            if (callingAppId >= Process.FIRST_APPLICATION_UID
+                    && !isCallerSystemApp(callingSetting)
+                    && isRomPackage(targetPkg)) {
+                return true;
+            }
             if (callingAppId < Process.FIRST_APPLICATION_UID
                     || targetPkgSetting.getAppId() < Process.FIRST_APPLICATION_UID
                     || callingAppId == targetPkgSetting.getAppId()) {
