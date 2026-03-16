@@ -5,7 +5,7 @@
 -->
 <resources>
     <!-- Smartspace -->
-    <attr format="dimension" name="remoteViewsCardCornerRadius" />
+    <attr format="dimension" name="backgroundCornerRadius" />
     <attr format="dimension" name="smartspaceSubtitleTextSize" />
     <attr format="dimension" name="smartspaceTitleTextSize" />
     <declare-styleable
