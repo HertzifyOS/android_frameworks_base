@@ -111,6 +111,7 @@ import android.widget.Editor;
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.util.Preconditions;
 
+import com.android.internal.util.hertzify.HideAppListUtils;
 import com.android.internal.util.hertzify.HideDeveloperStatusUtils;
 
 import java.io.IOException;
@@ -3838,6 +3839,10 @@ public final class Settings {
                 final @CanBeCURRENT @UserIdInt int userId) {
             if (HideDeveloperStatusUtils.shouldHideDevStatus(cr, cr.getPackageName(), name)) {
                 return "0" /* Disabled */;
+            }
+            if (name.equals(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) 
+            && HideAppListUtils.shouldHideAppList(cr, cr.getPackageName())) {
+                return "";
             }
             final boolean isSelf = (userId == UserHandle.myUserId());
             final AttributionSource attributionSource = cr.getAttributionSource();
@@ -7651,6 +7656,11 @@ public final class Settings {
             if (HideDeveloperStatusUtils.shouldHideDevStatus(resolver, resolver.getPackageName(), name)) {
                 return "0" /* Disabled */;
             }
+
+            if (name.equals(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) 
+            && HideAppListUtils.shouldHideAppList(resolver, resolver.getPackageName())) {
+                return "";
+            }
             return getStringForUser(resolver, name, resolver.getUserId());
         }
 
@@ -7660,6 +7670,10 @@ public final class Settings {
                 @CanBeCURRENT @UserIdInt int userId) {
             if (HideDeveloperStatusUtils.shouldHideDevStatus(resolver, resolver.getPackageName(), name)) {
                 return "0" /* Disabled */;
+            }
+            if (name.equals(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) 
+            && HideAppListUtils.shouldHideAppList(resolver, resolver.getPackageName())) {
+                return "";
             }
             if (MOVED_TO_GLOBAL.contains(name)) {
                 Log.w(TAG, "Setting " + name + " has moved from android.provider.Settings.Secure"
@@ -22490,6 +22504,10 @@ public final class Settings {
             ContentResolver resolver = getContentResolver();
             if (HideDeveloperStatusUtils.shouldHideDevStatus(resolver, resolver.getPackageName(), name)) {
                 return "0" /* Disabled */;
+            }
+            if (name.equals(Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES) 
+            && HideAppListUtils.shouldHideAppList(resolver, resolver.getPackageName())) {
+                return "";
             }
             return sNameValueCache.getStringForUser(resolver, name, resolver.getUserId());
         }
