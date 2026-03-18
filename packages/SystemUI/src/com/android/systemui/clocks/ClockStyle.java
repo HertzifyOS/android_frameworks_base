@@ -108,7 +108,8 @@ public class ClockStyle extends RelativeLayout implements TunerService.Tunable {
     public static final String CLOCK_CUSTOM_COLOR_KEY = Settings.Secure.LOCK_SCREEN_CUSTOM_CLOCK_CUSTOM_COLOR;
     public static final String CLOCK_TEXT_OPACITY_KEY = Settings.Secure.LOCK_SCREEN_CUSTOM_CLOCK_OPACITY;
     public static final String CLOCK_FRAME_MARGIN_TOP_KEY = Settings.Secure.LOCK_SCREEN_CUSTOM_CLOCK_MARGIN_TOP;
-
+    public static final String CLOCK_SIZE_KEY = Settings.Secure.LOCK_SCREEN_CUSTOM_CLOCK_SIZE;
+    
     public static final String COLOR_MODE_DEFAULT = "default";
     public static final String COLOR_MODE_ACCENT = "accent";
     public static final String COLOR_MODE_CUSTOM = "custom";
@@ -118,6 +119,9 @@ public class ClockStyle extends RelativeLayout implements TunerService.Tunable {
     private static final int DEFAULT_MARGIN_TOP = 15;
     private static final int DEFAULT_CUSTOM_COLOR = Color.WHITE;
     private static final int AOD_OPACITY_CAP = 70;
+    private static final int DEFAULT_CLOCK_SIZE = 100;
+    private static final int MIN_CLOCK_SIZE = 50;
+    private static final int MAX_CLOCK_SIZE = 150;
 
     private static final long AOD_UPDATE_INTERVAL_MILLIS = 60_000L;
     private static final long UPDATE_INTERVAL_MILLIS = 15_000L;
@@ -140,6 +144,7 @@ public class ClockStyle extends RelativeLayout implements TunerService.Tunable {
     private int mCustomColor = DEFAULT_CUSTOM_COLOR;
     private int mClockOpacity = DEFAULT_OPACITY;
     private int mClockFrameMarginTop = DEFAULT_MARGIN_TOP;
+    private int mClockSizeScale = DEFAULT_CLOCK_SIZE;
 
     private long lastUpdateTimeMillis = 0;
     private boolean mDozing;
@@ -237,7 +242,8 @@ public class ClockStyle extends RelativeLayout implements TunerService.Tunable {
                     CLOCK_COLOR_MODE_KEY,
                     CLOCK_CUSTOM_COLOR_KEY,
                     CLOCK_TEXT_OPACITY_KEY,
-                    CLOCK_FRAME_MARGIN_TOP_KEY);
+                    CLOCK_FRAME_MARGIN_TOP_KEY,
+                    CLOCK_SIZE_KEY);
             mStatusBarStateController.addCallback(mStatusBarStateListener);
             mDozing = mStatusBarStateController.isDozing();
             mStatusBarStateListener.onDozingChanged(mDozing);
@@ -341,11 +347,42 @@ public class ClockStyle extends RelativeLayout implements TunerService.Tunable {
         if (currentClockView == null) return;
         applyClockAlpha();
         applyTextClockColor(currentClockView);
+        applyClockScaleAfterLayout(currentClockView);
     }
 
     private void updateClockTextColor() {
         if (currentClockView == null) return;
         applyTextClockColor(currentClockView);
+    }
+
+    private float getScaleFactor() {
+        int clamped = Math.max(MIN_CLOCK_SIZE, Math.min(MAX_CLOCK_SIZE, mClockSizeScale));
+        return clamped / 100f;
+    }
+
+    private void applyClockScale() {
+        if (currentClockView == null) return;
+        float scale = getScaleFactor();
+        currentClockView.setScaleX(scale);
+        currentClockView.setScaleY(scale);
+        currentClockView.setPivotX(currentClockView.getWidth() / 2f);
+        currentClockView.setPivotY(0f);
+    }
+
+    private void applyClockScaleAfterLayout(final View view) {
+        if (view == null) return;
+        if (view.getWidth() > 0) {
+            applyClockScale();
+        } else {
+            view.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+                @Override
+                public void onLayoutChange(View v, int l, int t, int r, int b,
+                        int ol, int ot, int or, int ob) {
+                    v.removeOnLayoutChangeListener(this);
+                    applyClockScale();
+                }
+            });
+        }
     }
 
     private void applyTextClockColor(View view) {
@@ -465,6 +502,11 @@ public class ClockStyle extends RelativeLayout implements TunerService.Tunable {
                 mClockFrameMarginTop = TunerService.parseInteger(newValue, DEFAULT_MARGIN_TOP);
                 mClockFrameMarginTop = Math.max(0, Math.min(100, mClockFrameMarginTop));
                 updateClockFrameMargin();
+                break;
+            case CLOCK_SIZE_KEY:
+                mClockSizeScale = TunerService.parseInteger(newValue, DEFAULT_CLOCK_SIZE);
+                mClockSizeScale = Math.max(MIN_CLOCK_SIZE, Math.min(MAX_CLOCK_SIZE, mClockSizeScale));
+                applyClockScale();
                 break;
         }
     }
