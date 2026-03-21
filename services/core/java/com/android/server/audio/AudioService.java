@@ -12215,6 +12215,8 @@ public class AudioService extends IAudioService.Stub
                     Settings.System.MASTER_BALANCE), false, this, UserHandle.USER_ALL);
             mContentResolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.SHOW_APP_VOLUME), false, this);
+            mContentResolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.MULTI_AUDIO_FOCUS_ENABLED), false, this);
 
             mEncodedSurroundMode = mSettings.getGlobalInt(
                     mContentResolver, Settings.Global.ENCODED_SURROUND_OUTPUT,
@@ -12250,6 +12252,7 @@ public class AudioService extends IAudioService.Stub
                 updateMasterBalance(mContentResolver);
                 updateShowAppVolume(mContentResolver);
             }
+            updateMultiAudioFocusSetting(mContentResolver);
 
             synchronized (mSurroundLock) {
                 updateEncodedSurroundOutput();
@@ -12268,6 +12271,21 @@ public class AudioService extends IAudioService.Stub
                 mShowAppVolume = showAppVolume;
                 if (mShowAppVolume == 0) {
                     resetAppVolumes();
+                }
+            }
+        }
+
+        private void updateMultiAudioFocusSetting(ContentResolver cr) {
+            if (mMediaFocusControl == null) {
+                return;
+            }
+            final boolean enabled = mSettings.getSystemIntForUser(cr,
+                    Settings.System.MULTI_AUDIO_FOCUS_ENABLED, 0, UserHandle.USER_CURRENT) != 0;
+            final boolean wasEnabled = mMediaFocusControl.getMultiAudioFocusEnabled();
+            if (wasEnabled != enabled) {
+                mMediaFocusControl.updateMultiAudioFocus(enabled);
+                if (!enabled) {
+                    mDeviceBroker.postBroadcastBecomingNoisy();
                 }
             }
         }
