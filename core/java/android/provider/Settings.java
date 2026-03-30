@@ -14147,6 +14147,12 @@ public final class Settings {
         public static final String LOCK_SCREEN_CUSTOM_CLOCK_MARGIN_TOP = "lock_screen_custom_clock_margin_top";
 
         /**
+         * Whether to show qs media player
+         * @hide
+         */
+        public static final String QS_SHOW_MEDIA_PLAYER = "qs_show_media_player";
+
+        /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
          *
