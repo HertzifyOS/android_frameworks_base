@@ -5,66 +5,54 @@
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <!-- Button that copies the url to the log of a crashed application -->
-    <string name="aerr_copy">Copy crash log URL</string>
-    <string name="url_copy_success">URL copied successfully</string>
-    <string name="url_copy_failed">An error occured while uploading the log to mkr/bin</string>
-    <!-- Settings Restart -->
-    <string name="settings_restart_title">Settings restart required</string>
-    <string name="settings_restart_message">For all changes to take effect, a Settings app restart is required. Restart Settings app now?</string>
-    <!-- System Reboot -->
-    <string name="system_restart_title">System restart required</string>
-    <string name="system_restart_message">For all the changes to take effect, a system restart is required. Perform system restart now?</string>
-    <!-- SystemUI Restart -->
-    <string name="systemui_restart_title">SystemUI restart required</string>
-    <string name="systemui_restart_message">For all changes to take effect, a SystemUI restart is required. Restart SystemUI now?</string>
-    <!-- Launcher Restart -->
-    <string name="launcher_restart_title">Launcher restart required</string>
-    <string name="launcher_restart_message">For all changes to take effect, a Launcher restart is required. Restart Launcher now?</string>
+    <string name="aerr_copy">Copiar URL do log de erro</string>
+    <string name="url_copy_success">URL copiada com sucesso</string>
+    <string name="url_copy_failed">Ocorreu um erro ao fazer o upload do log para mkr/bin</string>
     <!-- Lock gesture -->
-    <string name="gesture_locked_warning">Swipe again to unlock gestures</string>
+    <string name="gesture_locked_warning">Deslize novamente para desbloquear os gestos</string>
     <!-- GameSpace -->
-    <string name="gamespace_new_game_added"><xliff:g id="name" example="MyApp">%s</xliff:g> added to GameSpace</string>
+    <string name="gamespace_new_game_added"><xliff:g id="name" example="MyApp">%s</xliff:g> adicionado ao GameSpace</string>
     <!-- App lock -->
-    <string name="unlock_application">Unlock <xliff:g id="label" example="Telegram">%1$s</xliff:g></string>
+    <string name="unlock_application">Desbloquear <xliff:g id="label" example="Telegram">%1$s</xliff:g></string>
     <!-- Health interface -->
-    <string name="charging_control_notification_channel">Charging control</string>
-    <string name="charging_control_notification_title">Charging control</string>
-    <string name="charging_control_notification_cancel_once">Cancel</string>
-    <string name="charging_control_notification_content_limit">Battery will be charged to %1$d%%</string>
-    <string name="charging_control_notification_content_limit_reached">Battery is charged to %1$d%%</string>
-    <string name="charging_control_notification_content_target">Battery will be fully charged at %1$s</string>
-    <string name="charging_control_notification_content_target_reached">Battery is charged</string>
+    <string name="charging_control_notification_channel">Controle de carregamento</string>
+    <string name="charging_control_notification_title">Controle de carregamento</string>
+    <string name="charging_control_notification_cancel_once">Cancelar</string>
+    <string name="charging_control_notification_content_limit">A bateria será carregada até %1$d%%</string>
+    <string name="charging_control_notification_content_limit_reached">A bateria está carregada em %1$d%%</string>
+    <string name="charging_control_notification_content_target">A bateria será carregada em %1$s</string>
+    <string name="charging_control_notification_content_target_reached">A bateria está carregada</string>
     <!-- Charging speed strings -->
-    <string name="charging_speed">Charging speed</string>
-    <string name="charging_speed_slow">Slow</string>
-    <string name="charging_speed_fast">Fast</string>
-    <string name="charging_speed_super_fast">Super fast</string>
+    <string name="charging_speed">Velocidade de carregamento</string>
+    <string name="charging_speed_slow">Devagar</string>
+    <string name="charging_speed_fast">Rápido</string>
+    <string name="charging_speed_super_fast">Muito rápido</string>
     <!-- LiveDisplay strings -->
-    <string name="live_display_auto">Automatic</string>
-    <string name="live_display_auto_summary">Automatically adjust color temperature of screen after sunset and sunrise</string>
-    <string name="live_display_off">Off</string>
-    <string name="live_display_off_summary">Disable all adjustments</string>
-    <string name="live_display_day">Day</string>
-    <string name="live_display_day_summary">Use day settings only</string>
-    <string name="live_display_night">Night</string>
-    <string name="live_display_night_summary">Use night settings only</string>
-    <string name="live_display_outdoor">Outdoor (bright sun)</string>
-    <string name="live_display_outdoor_summary">Use outdoor settings only</string>
-    <string name="live_display_hint">LiveDisplay can help reduce eyestrain and help you sleep at night. Click here to try it out!</string>
-    <string name="accessibility_quick_settings_live_display_off">LiveDisplay off.</string>
-    <string name="accessibility_quick_settings_live_display_auto">LiveDisplay: auto mode.</string>
-    <string name="accessibility_quick_settings_live_display_day">LiveDisplay: day mode.</string>
-    <string name="accessibility_quick_settings_live_display_night">LiveDisplay: night mode.</string>
-    <string name="accessibility_quick_settings_live_display_outdoor">LiveDisplay: outdoor mode.</string>
-    <string name="accessibility_quick_settings_live_display_changed_off">LiveDisplay turned off.</string>
-    <string name="accessibility_quick_settings_live_display_changed_auto">LiveDisplay changed to auto mode.</string>
-    <string name="accessibility_quick_settings_live_display_changed_day">LiveDisplay changed to day mode.</string>
-    <string name="accessibility_quick_settings_live_display_changed_night">LiveDisplay changed to night mode.</string>
-    <string name="accessibility_quick_settings_live_display_changed_outdoor">LiveDisplay changed to outdoor mode.</string>
+    <string name="live_display_auto">Automático</string>
+    <string name="live_display_auto_summary">Ajusta automaticamente a temperatura de cor da tela após o anoitecer e o amanhecer</string>
+    <string name="live_display_off">Desligado</string>
+    <string name="live_display_off_summary">Desativar todos os ajustes</string>
+    <string name="live_display_day">Dia</string>
+    <string name="live_display_day_summary">Usar apenas configurações diurnas</string>
+    <string name="live_display_night">Noite</string>
+    <string name="live_display_night_summary">Use apenas configurações noturnas</string>
+    <string name="live_display_outdoor">Externo (sol claro)</string>
+    <string name="live_display_outdoor_summary">Usar configurações apenas no modo externo</string>
+    <string name="live_display_hint">LiveDisplay pode ajudar a reduzir o cansaço visual e ajudá-lo a dormir à noite. Clique aqui para experimentá-lo!</string>
+    <string name="accessibility_quick_settings_live_display_off">LiveDisplay desligado.</string>
+    <string name="accessibility_quick_settings_live_display_auto">LiveDisplay: modo automático.</string>
+    <string name="accessibility_quick_settings_live_display_day">LiveDisplay: modo diurno.</string>
+    <string name="accessibility_quick_settings_live_display_night">LiveDisplay: modo noturno.</string>
+    <string name="accessibility_quick_settings_live_display_outdoor">LiveDisplay: modo externo.</string>
+    <string name="accessibility_quick_settings_live_display_changed_off">LiveDisplay foi desligado.</string>
+    <string name="accessibility_quick_settings_live_display_changed_auto">LiveDisplay alterado para modo automático.</string>
+    <string name="accessibility_quick_settings_live_display_changed_day">LiveDisplay alterado para modo diurno.</string>
+    <string name="accessibility_quick_settings_live_display_changed_night">LiveDisplay alterado para modo noturno.</string>
+    <string name="accessibility_quick_settings_live_display_changed_outdoor">LiveDisplay alterado para o modo externo.</string>
     <!-- Pocket Lock -->
-    <string name="pocket_mode_title">Pocket mode is active</string>
-    <string name="pocket_mode_illustration_description">Illustration of phone in pocket</string>
-    <string name="pocket_mode_instructions_header">To use your phone:</string>
-    <string name="pocket_mode_instruction_step1">1. Ensure the blue area (proximity sensor) shown above is unobstructed and free from dirt or dust.</string>
-    <string name="pocket_mode_instruction_step2">2. Press and hold the power button to exit pocket mode.</string>
+    <string name="pocket_mode_title">Modo bolso está ativo</string>
+    <string name="pocket_mode_illustration_description">Ilustração do telefone no bolso</string>
+    <string name="pocket_mode_instructions_header">Para usar seu telefone:</string>
+    <string name="pocket_mode_instruction_step1">1. Certifique-se de que a área azul (sensor de proximidade) mostrada acima está desobstruída e livre de terra ou pó.</string>
+    <string name="pocket_mode_instruction_step2">2. Pressione e segure o botão liga/desliga para sair do modo bolso.</string>
 </resources>
