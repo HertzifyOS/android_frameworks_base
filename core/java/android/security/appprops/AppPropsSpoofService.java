@@ -35,7 +35,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class AppPropsSpoofService {
     private static final String TAG = "AppProps";
-    private static final String CONFIG_PATH = "/data/adb/appprops";
+    private static final String CONFIG_PATH = "/data/system/appprops";
     private static final String CONFIG_FILE = "appprops.json";
 
     private static AppPropsSpoofService sInstance;
