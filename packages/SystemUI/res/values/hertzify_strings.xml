@@ -274,6 +274,7 @@
     <string name="dynamic_bar_wireless_charging">Wireless Charging</string>
     <string name="dynamic_bar_until_full">until full</string>
     <string name="dynamic_bar_battery_saver">Battery Saver</string>
+    <string name="dynamic_bar_call">Call</string>
     <string name="dynamic_bar_incoming_call">Incoming Call</string>
     <string name="dynamic_bar_connected">Connected</string>
     <string name="dynamic_bar_disconnect">Disconnect</string>
