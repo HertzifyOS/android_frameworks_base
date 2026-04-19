@@ -47,7 +47,6 @@ import android.service.notification.Flags
 import com.android.internal.logging.UiEvent
 import com.android.internal.logging.UiEventLogger
 import com.android.internal.messages.nano.SystemMessageProto.SystemMessage
-import com.android.systemui.dynamicbar.domain.DynamicBarSettings
 import com.android.systemui.dagger.qualifiers.Main
 import com.android.systemui.plugins.statusbar.StatusBarStateController
 import com.android.systemui.settings.UserTracker
@@ -114,15 +113,6 @@ class PeekDisabledSuppressor(
 
         observer.onChange(/* selfChange= */ true)
     }
-}
-
-class PeekDynamicBarSuppressor(
-    private val settings: DynamicBarSettings,
-) : VisualInterruptionCondition(
-    types = setOf(PEEK),
-    reason = "suppressed by DynamicBar"
-) {
-    override fun shouldSuppress(): Boolean = settings.isNotificationEventsActive()
 }
 
 class PulseDisabledSuppressor(
