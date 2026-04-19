@@ -1,13 +1,12 @@
 package com.android.systemui.dynamicbar.data
 
 import android.util.Log
+import com.android.systemui.dynamicbar.data.source.AospChipIslandManager
 import com.android.systemui.dynamicbar.data.source.AppTrackingIslandManager
 import com.android.systemui.dynamicbar.data.source.BiometricIslandManager
 import com.android.systemui.dynamicbar.data.source.ConnectivityIslandManager
 import com.android.systemui.dynamicbar.data.source.MediaIslandManager
 import com.android.systemui.dynamicbar.data.source.NotificationIslandManager
-import com.android.systemui.dynamicbar.data.source.PrivacyIslandManager
-import com.android.systemui.dynamicbar.data.source.ScreenRecordIslandManager
 import com.android.systemui.dynamicbar.data.source.SystemIslandManager
 import com.android.systemui.dynamicbar.data.source.TorchIslandManager
 import com.android.systemui.dynamicbar.domain.DynamicBarSettings
@@ -25,8 +24,6 @@ import kotlinx.coroutines.flow.map
 class IslandEventRepository
 @Inject
 constructor(
-    val screenRecord: ScreenRecordIslandManager,
-    val privacy: PrivacyIslandManager,
     val media: MediaIslandManager,
     val connectivity: ConnectivityIslandManager,
     val system: SystemIslandManager,
@@ -34,6 +31,7 @@ constructor(
     val appTracking: AppTrackingIslandManager,
     val torch: TorchIslandManager,
     val biometric: BiometricIslandManager,
+    val aospChip: AospChipIslandManager,
     private val settings: DynamicBarSettings,
 ) {
     companion object {
@@ -67,16 +65,10 @@ constructor(
         if (listenersStarted) return
         listenersStarted = true
         Log.d(TAG, "Starting event listeners")
-        notification.onScreenRecordNotificationTime = { timeMs ->
-            screenRecord.updateNotificationStartTime(timeMs)
-        }
         syncDisabledTypes()
-        if (isTypeEnabled("screen_recording")) screenRecord.startListening()
-        if (isTypeEnabled("privacy")) privacy.startListening()
         if (isTypeEnabled("media")) media.startListening()
         if (isTypeEnabled("bluetooth")) connectivity.startBluetooth()
         if (isTypeEnabled("hotspot")) connectivity.startHotspot()
-        if (isTypeEnabled("casting")) connectivity.startCast()
         if (isTypeEnabled("vpn")) connectivity.startVpn()
         if (isTypeEnabled("charging")) system.startCharging()
         if (isTypeEnabled("ringer")) system.startRinger()
@@ -91,8 +83,6 @@ constructor(
         if (!listenersStarted) return
         listenersStarted = false
         Log.d(TAG, "Stopping event listeners")
-        screenRecord.stopListening()
-        privacy.stopListening()
         media.stopListening()
         connectivity.stopListening()
         system.stopListening()
@@ -106,10 +96,6 @@ constructor(
         if (!listenersStarted) return
         syncDisabledTypes()
 
-        if (isTypeEnabled("screen_recording")) screenRecord.startListening()
-        else screenRecord.stopListening()
-        if (isTypeEnabled("privacy")) privacy.startListening()
-        else privacy.stopListening()
         if (isTypeEnabled("media")) media.startListening()
         else media.stopListening()
 
@@ -117,8 +103,6 @@ constructor(
         else connectivity.stopBluetooth()
         if (isTypeEnabled("hotspot")) connectivity.startHotspot()
         else connectivity.stopHotspot()
-        if (isTypeEnabled("casting")) connectivity.startCast()
-        else connectivity.stopCast()
         if (isTypeEnabled("vpn")) connectivity.startVpn()
         else connectivity.stopVpn()
 
@@ -142,33 +126,6 @@ constructor(
     }
 
     private fun buildEventsFlow(): Flow<List<IslandEvent>> {
-
-        val micCamFiltered =
-            combine(privacy.micCamEvent, notification.audioRecordingEvent) { micCam, audioRec ->
-                if (audioRec != null && micCam != null && micCam.isMic && !micCam.isCam) null
-                else micCam
-            }
-
-        val castingFiltered =
-            combine(
-                connectivity.castingEvent,
-                screenRecord.screenRecordEvent,
-            ) { cast, rec ->
-                if (rec != null) null else cast
-            }
-
-        val highGroupA =
-            combine(
-                screenRecord.screenRecordEvent,
-                micCamFiltered,
-                castingFiltered,
-            ) { rec, micCam, cast ->
-                listOfNotNull(
-                    rec?.takeIf { isTypeEnabled("screen_recording") },
-                    micCam?.takeIf { isTypeEnabled("privacy") },
-                    cast?.takeIf { isTypeEnabled("casting") },
-                )
-            }
         val sportsGroup = notification.sportsEvents.map { notifSports ->
             if (!isTypeEnabled("sports")) emptyList()
             else notifSports
@@ -179,13 +136,12 @@ constructor(
         ) { promoted, sports ->
             (if (isTypeEnabled("promoted_ongoing")) promoted else emptyList()) + sports
         }
-        val highGroupB =
-            combine(highGroupA, torch.torchEvent) { events, t ->
-                events + listOfNotNull(t?.takeIf { isTypeEnabled("torch") })
-            }
         val highGroup =
-            combine(highGroupB, biometric.biometricEvent) { events, bio ->
-                events + listOfNotNull(bio?.takeIf { isTypeEnabled("biometric_unlock") })
+            combine(torch.torchEvent, biometric.biometricEvent) { t, bio ->
+                listOfNotNull(
+                    t?.takeIf { isTypeEnabled("torch") },
+                    bio?.takeIf { isTypeEnabled("biometric_unlock") },
+                )
             }
         val midGroup =
             combine(
@@ -241,8 +197,9 @@ constructor(
             transientGroup,
             promotedGroup,
             indicationGroup,
-        ) { high, transient, promoted, indication ->
-            high + transient + promoted + indication
+            aospChip.aospChipEvents,
+        ) { high, transient, promoted, indication, aosp ->
+            high + transient + promoted + indication + aosp
         }
 
         return allEvents.map { events ->
@@ -254,4 +211,3 @@ constructor(
         }
     }
 }
-
