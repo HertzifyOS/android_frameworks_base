@@ -343,7 +343,7 @@ public class LineageHardwareService extends SystemService {
             Intent intent = new Intent("lineageos.intent.action.INITIALIZE_LINEAGE_HARDWARE");
             intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND);
             mContext.sendBroadcastAsUser(intent, UserHandle.ALL,
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS");
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS");
         }
     }
 
@@ -360,14 +360,14 @@ public class LineageHardwareService extends SystemService {
         @Override
         public int getSupportedFeatures() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             return mLineageHwImpl.getSupportedFeatures();
         }
 
         @Override
         public boolean get(int feature) {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(feature)) {
                 Log.e(TAG, "feature " + feature + " is not supported");
                 return false;
@@ -378,7 +378,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean set(int feature, boolean enable) {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(feature)) {
                 Log.e(TAG, "feature " + feature + " is not supported");
                 return false;
@@ -389,7 +389,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public int[] getDisplayColorCalibration() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_COLOR_CALIBRATION)) {
                 Log.e(TAG, "Display color calibration is not supported");
                 return null;
@@ -400,7 +400,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean setDisplayColorCalibration(int[] rgb) {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_COLOR_CALIBRATION)) {
                 Log.e(TAG, "Display color calibration is not supported");
                 return false;
@@ -415,7 +415,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean requireAdaptiveBacklightForSunlightEnhancement() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_SUNLIGHT_ENHANCEMENT)) {
                 Log.e(TAG, "Sunlight enhancement is not supported");
                 return false;
@@ -426,7 +426,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean isSunlightEnhancementSelfManaged() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_SUNLIGHT_ENHANCEMENT)) {
                 Log.e(TAG, "Sunlight enhancement is not supported");
                 return false;
@@ -437,7 +437,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public DisplayMode[] getDisplayModes() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_MODES)) {
                 Log.e(TAG, "Display modes are not supported");
                 return null;
@@ -448,7 +448,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public DisplayMode getCurrentDisplayMode() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_MODES)) {
                 Log.e(TAG, "Display modes are not supported");
                 return null;
@@ -459,7 +459,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public DisplayMode getDefaultDisplayMode() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_MODES)) {
                 Log.e(TAG, "Display modes are not supported");
                 return null;
@@ -470,7 +470,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean setDisplayMode(DisplayMode mode, boolean makeDefault) {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (!isSupported(LineageHardwareManager.FEATURE_DISPLAY_MODES)) {
                 Log.e(TAG, "Display modes are not supported");
                 return false;
@@ -481,7 +481,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public int getColorBalanceMin() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_COLOR_BALANCE)) {
                 return mLineageHwImpl.getColorBalanceMin();
             }
@@ -491,7 +491,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public int getColorBalanceMax() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_COLOR_BALANCE)) {
                 return mLineageHwImpl.getColorBalanceMax();
             }
@@ -501,7 +501,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public int getColorBalance() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_COLOR_BALANCE)) {
                 return mLineageHwImpl.getColorBalance();
             }
@@ -511,7 +511,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean setColorBalance(int value) {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_COLOR_BALANCE)) {
                 return mLineageHwImpl.setColorBalance(value);
             }
@@ -521,7 +521,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public HSIC getPictureAdjustment() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_PICTURE_ADJUSTMENT)) {
                 return mLineageHwImpl.getPictureAdjustment();
             }
@@ -531,7 +531,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public HSIC getDefaultPictureAdjustment() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_PICTURE_ADJUSTMENT)) {
                 return mLineageHwImpl.getDefaultPictureAdjustment();
             }
@@ -541,7 +541,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public boolean setPictureAdjustment(HSIC hsic) {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_PICTURE_ADJUSTMENT) && hsic != null) {
                 return mLineageHwImpl.setPictureAdjustment(hsic);
             }
@@ -551,7 +551,7 @@ public class LineageHardwareService extends SystemService {
         @Override
         public float[] getPictureAdjustmentRanges() {
             mContext.enforceCallingOrSelfPermission(
-                    "lineageos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
+                    "hertzifyos.permission.HARDWARE_ABSTRACTION_ACCESS", null);
             if (isSupported(LineageHardwareManager.FEATURE_PICTURE_ADJUSTMENT)) {
                 final List<Range<Float>> r = mLineageHwImpl.getPictureAdjustmentRanges();
                 return new float[] {
