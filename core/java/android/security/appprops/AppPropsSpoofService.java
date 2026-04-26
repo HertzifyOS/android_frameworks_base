@@ -17,6 +17,7 @@
 package android.security.appprops;
 
 import android.app.ActivityManager;
+import android.app.IActivityManager;
 import android.os.Build;
 import android.os.RemoteException;
 import android.util.JsonReader;
@@ -63,10 +64,16 @@ public final class AppPropsSpoofService {
         mEnabled = false;
         mConfigLoaded = false;
 
+        IActivityManager am = ActivityManager.getService();
+        if (am == null) {
+            Log.w(TAG, "ActivityManager not ready, skipping gameprops config load");
+            return;
+        }
+
         String content;
         try {
-            content = ActivityManager.getService().getSpoofAppPropsConfig();
-        } catch (RemoteException e) {
+            content = am.getSpoofAppPropsConfig();
+        } catch (Throwable e) {
             Log.e(TAG, "Failed to fetch appprops config from system_server", e);
             return;
         }
