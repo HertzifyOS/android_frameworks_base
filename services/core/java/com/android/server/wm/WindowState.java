@@ -6066,7 +6066,10 @@ class WindowState extends WindowContainer<WindowState> implements WindowManagerP
         if (mOrientationChangeRedrawRequestTime > 0) {
             final long duration =
                     SystemClock.elapsedRealtime() - mOrientationChangeRedrawRequestTime;
-            Slog.i(TAG, "finishDrawing of orientation change: " + this + " " + duration + "ms");
+            if (DEBUG) {
+                Slog.i(TAG, "finishDrawing of orientation change: " + this + " " + duration
+                        + "ms");
+            }
             mOrientationChangeRedrawRequestTime = 0;
         } else if (mActivityRecord != null && mActivityRecord.mRelaunchStartTime != 0
                 && (!Flags.improveFluidResizingPerformance()
@@ -6074,7 +6077,9 @@ class WindowState extends WindowContainer<WindowState> implements WindowManagerP
                 && mActivityRecord.findMainWindow(false /* includeStartingApp */) == this) {
             final long duration =
                     SystemClock.elapsedRealtime() - mActivityRecord.mRelaunchStartTime;
-            Slog.i(TAG, "finishDrawing of relaunch: " + this + " " + duration + "ms");
+            if (DEBUG) {
+                Slog.i(TAG, "finishDrawing of relaunch: " + this + " " + duration + "ms");
+            }
             mActivityRecord.finishOrAbortReplacingWindow();
         }
         if (mActivityRecord != null && mAttrs.type == TYPE_APPLICATION_STARTING) {
