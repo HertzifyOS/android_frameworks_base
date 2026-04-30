@@ -389,6 +389,8 @@ public class DisplayPolicy {
 
     private boolean mShowingDream;
     private boolean mLastShowingDream;
+    private boolean mKeyguardShowingForPostLayout;
+    private boolean mKeyguardShowingAndNotOccludedForPostLayout;
     private boolean mDreamingLockscreen;
     private boolean mAllowLockscreenWhenOn;
 
@@ -1546,6 +1548,9 @@ public class DisplayPolicy {
 
         mAllowLockscreenWhenOn = false;
         mShowingDream = false;
+        mKeyguardShowingForPostLayout = isKeyguardShowing();
+        mKeyguardShowingAndNotOccludedForPostLayout =
+                mService.mPolicy.isKeyguardShowingAndNotOccluded();
         mIsFreeformWindowOverlappingWithNavBar = false;
         mShowingTransientInsetsTypes = 0;
         mImeInsetsConsumed = false;
@@ -1801,7 +1806,7 @@ public class DisplayPolicy {
         // started while the lockscreen was showing and remember this state
         // while the dream is showing.
         if (!mShowingDream) {
-            mDreamingLockscreen = mService.mPolicy.isKeyguardShowingAndNotOccluded();
+            mDreamingLockscreen = mKeyguardShowingAndNotOccludedForPostLayout;
         }
 
         updateSystemBarAttributes();
@@ -1847,7 +1852,7 @@ public class DisplayPolicy {
 
     private boolean shouldBeHiddenByKeyguard(WindowState win,
             @Nullable WindowState imeLayeringTarget) {
-        if (!mDisplayContent.isDefaultDisplay || !isKeyguardShowing()) {
+        if (!mDisplayContent.isDefaultDisplay || !mKeyguardShowingForPostLayout) {
             return false;
         }
 
