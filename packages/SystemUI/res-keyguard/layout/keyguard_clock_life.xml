@@ -17,7 +17,7 @@
         android:fontFamily="@font/PlayfairDisplay"
         android:textColor="@android:color/white"
         android:includeFontPadding="false"
-        android:textSize="100sp"
+        android:textSize="95sp"
         android:letterSpacing="0.4"
         android:layout_marginBottom="125dp" />
 
