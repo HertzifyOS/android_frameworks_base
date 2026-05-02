@@ -301,6 +301,7 @@ import com.android.internal.policy.DecorView;
 import com.android.internal.policy.PhoneFallbackEventHandler;
 import com.android.internal.protolog.ProtoLog;
 import com.android.internal.util.FastPrintWriter;
+import com.android.internal.util.ViewCacheManager;
 import com.android.internal.view.BaseSurfaceHolder;
 import com.android.internal.view.RootViewSurfaceTaker;
 import com.android.internal.view.SurfaceCallbackHelper;
@@ -695,6 +696,7 @@ public final class ViewRootImpl implements ViewParent,
     private boolean mDragResizing;
     private boolean mDragResizingCujBegun;
     private boolean mInvalidateRootRequested;
+    private boolean mFirstFrameDrawn = true;
     private int mCanvasOffsetX;
     private int mCanvasOffsetY;
     CompatibilityInfo.Translator mTranslator;
@@ -3395,6 +3397,10 @@ public final class ViewRootImpl implements ViewParent,
             }
         } else {
             mQueue.removeSyncBarrier(mTraversalBarrier);
+            if (mFirstFrameDrawn) {
+                ViewCacheManager.getInstance().onTraversalEnd(this);
+                mFirstFrameDrawn = false;
+            }
         }
     }
 
