@@ -3382,6 +3382,10 @@ public final class ViewRootImpl implements ViewParent,
             }
         } else {
             mQueue.removeSyncBarrier(mTraversalBarrier);
+            if (mFirstFrameDrawn) {
+                ViewCacheManager.getInstance().onTraversalEnd(this);
+                mFirstFrameDrawn = false;
+            }
         }
     }
 
