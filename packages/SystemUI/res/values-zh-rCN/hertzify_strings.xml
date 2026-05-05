@@ -106,16 +106,6 @@
     </plurals>
     <!-- 5G toggle in Internet Dialog -->
     <string name="enable_fiveg">Enable 5G</string>
-    <!-- Smartspace -->
-    <string name="accessibility_next_alarm">Next alarm at %s</string>
-    <string name="accessibility_smartspace_page">Page %1$d of %2$d</string>
-    <string name="active_mode_content_description">%1$s is on</string>
-    <string name="generic_smartspace_concatenated_desc">%1$s, %2$s</string>
-    <string name="music_controls_no_title">No title</string>
-    <string name="smartspace_content_desc">At a glance</string>
-    <string name="smartspace_flight_qr_code">QR code</string>
-    <string name="smartspace_icu_date_pattern">EEEMMMd</string>
-    <string name="smartspace_role_desc">View</string>
     <!-- Advanced restart menu -->
     <!-- Button to indicate more options -->
     <string name="global_action_restart_more">More</string>
@@ -154,12 +144,24 @@
     <string name="weather_condition_mist">Misty</string>
     <!-- Label for UI element which allows to use lens on screenshot [CHAR LIMIT=30] -->
     <string name="screenshot_lens_label">Lens</string>
-    <!-- Smart Pixels QS Tile -->
-    <string name="quick_settings_smart_pixels">Smart Pixels</string>
-    <string name="quick_settings_smart_pixels_on_power_save">Auto-enabled Smart Pixels</string>
     <!-- Kill button in notification guts -->
     <string name="force_stop_dlg_title">Force stop?</string>
     <string name="force_stop_dlg_text">If you force stop an app, it may misbehave.</string>
     <!-- Disable stacked mobile icons -->
     <string name="disable_stacked_mobile_icons_title">Disable combined data icon</string>
+    <!-- USB Mode Picker -->
+    <string name="usb_mode_picker_title">Select USB mode</string>
+    <string name="usb_mode_file_transfer">File transfer</string>
+    <string name="usb_mode_tethering">USB tethering</string>
+    <string name="usb_mode_midi">MIDI</string>
+    <string name="usb_mode_photo_transfer">Photo &amp; video transfer</string>
+    <string name="usb_mode_webcam">USB Webcam</string>
+    <string name="usb_mode_charging_only">Charging only</string>
+    <string name="usb_charging_status">USB charging is on</string>
+    <!-- Smart Pixels -->
+    <string name="quick_settings_smart_pixels_label">Smart Pixels</string>
+    <string name="quick_settings_smart_pixels_on">On</string>
+    <string name="quick_settings_smart_pixels_off">Off</string>
+    <string name="smart_pixels_percent_label">Pixel percentage</string>
+    <string name="smart_pixels_percent_format"><xliff:g id="percent" example="25">%d</xliff:g>%%</string>
 </resources>
