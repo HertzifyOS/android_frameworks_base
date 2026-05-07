@@ -208,7 +208,7 @@ public final class NotificationAttentionHelper {
     private final PolitenessStrategy mStrategy;
     private int mCurrentWorkProfileId = UserHandle.USER_NULL;
 
-    private boolean mSoundVibScreenOn;
+    private boolean mSoundVibScreenOn = true;
 
     public NotificationAttentionHelper(Context context, Object lock, LightsManager lightsManager,
             AccessibilityManager accessibilityManager, PackageManager packageManager,
