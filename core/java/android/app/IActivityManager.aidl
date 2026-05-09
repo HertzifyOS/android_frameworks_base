@@ -1078,4 +1078,6 @@ interface IActivityManager {
     void unregisterAnrWarningListener(in IAnrWarningCallback callback);
 
     String getSpoofPifConfig();
+
+    String getSpoofPifSpoofPhotos();
 }
