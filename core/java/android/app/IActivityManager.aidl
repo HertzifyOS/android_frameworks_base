@@ -1080,4 +1080,6 @@ interface IActivityManager {
     void releaseMemory(int minAdj, int maxKillCount, boolean includeUIProcesses, boolean skipCamera);
 
     String getSpoofPifConfig();
+
+    String getSpoofPifSpoofPhotos();
 }
