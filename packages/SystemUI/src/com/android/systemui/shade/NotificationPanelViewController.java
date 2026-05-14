@@ -271,6 +271,10 @@ public final class NotificationPanelViewController implements
 
     private static final String DOUBLE_TAP_SLEEP_GESTURE =
             "system:" + Settings.System.DOUBLE_TAP_SLEEP_GESTURE;
+    private static final String STATUS_BAR_BRIGHTNESS_CONTROL =
+            "system:" + Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL;
+    private static final String STATUS_BAR_BRIGHTNESS_CONTROL_LOCKSCREEN =
+            "system:" + Settings.System.STATUS_BAR_BRIGHTNESS_CONTROL_LOCKSCREEN;
 
     private static final Rect M_DUMMY_DIRTY_RECT = new Rect(0, 0, 1, 1);
     private static final Rect EMPTY_RECT = new Rect();
