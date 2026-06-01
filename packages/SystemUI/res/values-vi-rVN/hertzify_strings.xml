@@ -149,15 +149,6 @@
     <string name="force_stop_dlg_text">Nếu bạn buộc dừng một ứng dụng, ứng dụng đó có thể hoạt động sai.</string>
     <!-- Disable stacked mobile icons -->
     <string name="disable_stacked_mobile_icons_title">Tắt biểu tượng dữ liệu kết hợp</string>
-    <!-- USB Mode Picker -->
-    <string name="usb_mode_picker_title">Chọn chế độ USB</string>
-    <string name="usb_mode_file_transfer">Truyền tệp</string>
-    <string name="usb_mode_tethering">Chia sẻ mạng qua USB</string>
-    <string name="usb_mode_midi">MIDI</string>
-    <string name="usb_mode_photo_transfer">Truyền ảnh &amp; video</string>
-    <string name="usb_mode_webcam">USB Webcam</string>
-    <string name="usb_mode_charging_only">Chỉ sạc</string>
-    <string name="usb_charging_status">Sạc qua USB đang bật</string>
     <!-- Smart Pixels -->
     <string name="quick_settings_smart_pixels_label">Điểm ảnh thông minh</string>
     <string name="quick_settings_smart_pixels_on">Bật</string>
