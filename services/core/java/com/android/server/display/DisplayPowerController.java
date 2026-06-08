@@ -718,6 +718,10 @@ final class DisplayPowerController implements AutomaticBrightnessController.Call
     /**
      * Returns true if the proximity sensor screen-off function is available.
      */
+    boolean isDimPolicy() {
+        return mPowerRequest != null && mPowerRequest.policy == DisplayPowerRequest.POLICY_DIM;
+    }
+
     public boolean isProximitySensorAvailable() {
         return mDisplayPowerProximityStateController.isProximitySensorAvailable();
     }

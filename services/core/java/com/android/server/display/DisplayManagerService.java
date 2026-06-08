@@ -6330,6 +6330,14 @@ public final class DisplayManagerService extends SystemService {
         }
 
         @Override
+        public boolean isDisplayPolicyDim(int displayId) {
+            synchronized (mSyncRoot) {
+                DisplayPowerController dpc = mDisplayPowerControllers.get(displayId);
+                return dpc != null && dpc.isDimPolicy();
+            }
+        }
+
+        @Override
         public RefreshRateRange getRefreshRateForDisplayAndSensor(int displayId, String sensorName,
                 String sensorType) {
             final SensorManager sensorManager;

@@ -121,35 +121,38 @@ interface Vote {
     // For concurrent displays we want to limit refresh rate on all displays
     int PRIORITY_LAYOUT_LIMITED_FRAME_RATE = 16;
 
+    // Screen dim increases refresh rate to ensure smooth dimming animation
+    int PRIORITY_SCREEN_DIM_REFRESH_RATE = 17;
+
     // For internal application to limit display modes to specific ids
-    int PRIORITY_SYSTEM_REQUESTED_MODES = 17;
+    int PRIORITY_SYSTEM_REQUESTED_MODES = 18;
 
     // PRIORITY_LOW_POWER_MODE_MODES limits display modes to specific refreshRate-vsync pairs if
     // Settings.Global.LOW_POWER_MODE is on.
     // Lower priority that PRIORITY_LOW_POWER_MODE_RENDER_RATE and if discarded (due to other
     // higher priority votes), render rate limit can still apply
-    int PRIORITY_LOW_POWER_MODE_MODES = 18;
+    int PRIORITY_LOW_POWER_MODE_MODES = 19;
 
     // PRIORITY_LOW_POWER_MODE_RENDER_RATE force the render frame rate to [0, 60HZ] if
     // Settings.Global.LOW_POWER_MODE is on.
-    int PRIORITY_LOW_POWER_MODE_RENDER_RATE = 19;
+    int PRIORITY_LOW_POWER_MODE_RENDER_RATE = 20;
 
     // PRIORITY_FLICKER_REFRESH_RATE_SWITCH votes for disabling refresh rate switching. If the
     // higher priority voters' result is a range, it will fix the rate to a single choice.
     // It's used to avoid refresh rate switches in certain conditions which may result in the
     // user seeing the display flickering when the switches occur.
-    int PRIORITY_FLICKER_REFRESH_RATE_SWITCH = 20;
+    int PRIORITY_FLICKER_REFRESH_RATE_SWITCH = 21;
 
     // Force display to [0, 60HZ] if skin temperature is at or above CRITICAL.
-    int PRIORITY_SKIN_TEMPERATURE = 21;
+    int PRIORITY_SKIN_TEMPERATURE = 22;
 
     // The proximity sensor needs the refresh rate to be locked in order to function, so this is
     // set to a high priority.
-    int PRIORITY_PROXIMITY = 22;
+    int PRIORITY_PROXIMITY = 23;
 
     // The Under-Display Fingerprint Sensor (UDFPS) needs the refresh rate to be locked in order
     // to function, so this needs to be the highest priority of all votes.
-    int PRIORITY_UDFPS = 23;
+    int PRIORITY_UDFPS = 24;
 
     @IntDef(prefix = { "PRIORITY_" }, value = {
             PRIORITY_DEFAULT_RENDER_FRAME_RATE,
@@ -169,6 +172,7 @@ interface Vote {
             PRIORITY_AUTH_OPTIMIZER_RENDER_FRAME_RATE,
             PRIORITY_LAYOUT_LIMITED_REFRESH_RATE,
             PRIORITY_LAYOUT_LIMITED_FRAME_RATE,
+            PRIORITY_SCREEN_DIM_REFRESH_RATE,
             PRIORITY_SYSTEM_REQUESTED_MODES,
             PRIORITY_LOW_POWER_MODE_MODES,
             PRIORITY_LOW_POWER_MODE_RENDER_RATE,
@@ -304,6 +308,8 @@ interface Vote {
                 return "PRIORITY_LAYOUT_LIMITED_REFRESH_RATE";
             case PRIORITY_LAYOUT_LIMITED_FRAME_RATE:
                 return "PRIORITY_LAYOUT_LIMITED_FRAME_RATE";
+            case PRIORITY_SCREEN_DIM_REFRESH_RATE:
+                return "PRIORITY_SCREEN_DIM_REFRESH_RATE";
             case PRIORITY_SYSTEM_REQUESTED_MODES:
                 return "PRIORITY_SYSTEM_REQUESTED_MODES";
             default:

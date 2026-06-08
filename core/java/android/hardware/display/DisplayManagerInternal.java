@@ -104,6 +104,11 @@ public abstract class DisplayManagerInternal {
     public abstract boolean isProximitySensorAvailable(int displayId);
 
     /**
+     * Returns whether the display is currently in the dim policy state.
+     */
+    public abstract boolean isDisplayPolicyDim(int displayId);
+
+    /**
      * Registers a display group listener which will be informed of the addition, removal, or change
      * of display groups.
      *

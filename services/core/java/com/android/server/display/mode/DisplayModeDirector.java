@@ -1844,6 +1844,18 @@ public class DisplayModeDirector {
         @GuardedBy("mLock")
         private @Temperature.ThrottlingStatus int mThermalStatus = Temperature.THROTTLING_NONE;
 
+        private static final long SCREEN_DIM_REFRESH_RATE_TIMEOUT_MS = 1500L;
+
+        private boolean mWasDisplayDimmed;
+
+        private DisplayManagerInternal mDisplayManagerInternal;
+
+        private final Runnable mCancelDimRefreshRateVoteRunnable = () -> {
+            synchronized (mLock) {
+                mVotesStorage.updateGlobalVote(Vote.PRIORITY_SCREEN_DIM_REFRESH_RATE, null);
+            }
+        };
+
         BrightnessObserver(Context context, Handler handler, Injector injector,
                 DisplayManagerFlags flags) {
             mContext = context;
@@ -2055,6 +2067,7 @@ public class DisplayModeDirector {
 
         private void observe(SensorManager sensorManager) {
             mSensorManager = sensorManager;
+            mDisplayManagerInternal = mInjector.getDisplayManagerInternal();
             mBrightness = getBrightness(Display.DEFAULT_DISPLAY);
 
             // DeviceConfig is accessible after system ready.
@@ -2294,6 +2307,30 @@ public class DisplayModeDirector {
                         updateFlickerRefreshRateVotes();
                     }
                 }
+
+                boolean isDim = mDefaultDisplayState == Display.STATE_ON
+                        && mDisplayManagerInternal != null
+                        && mDisplayManagerInternal.isDisplayPolicyDim(
+                                Display.DEFAULT_DISPLAY);
+                if (isDim != mWasDisplayDimmed) {
+                    mWasDisplayDimmed = isDim;
+                    mHandler.removeCallbacks(mCancelDimRefreshRateVoteRunnable);
+                    synchronized (mLock) {
+                        if (mDefaultDisplayState == Display.STATE_ON) {
+                            float maxRefreshRate = getMaxRefreshRateLocked(
+                                    Display.DEFAULT_DISPLAY);
+                            mVotesStorage.updateGlobalVote(
+                                    Vote.PRIORITY_SCREEN_DIM_REFRESH_RATE,
+                                    Vote.forPhysicalRefreshRates(maxRefreshRate,
+                                            maxRefreshRate));
+                            mHandler.postDelayed(mCancelDimRefreshRateVoteRunnable,
+                                    SCREEN_DIM_REFRESH_RATE_TIMEOUT_MS);
+                        } else {
+                            mVotesStorage.updateGlobalVote(
+                                    Vote.PRIORITY_SCREEN_DIM_REFRESH_RATE, null);
+                        }
+                    }
+                }
             }
         }
 
@@ -2339,6 +2376,12 @@ public class DisplayModeDirector {
             } else {
                 mAmbientFilter = null;
                 mLightSensor = null;
+            }
+
+            mHandler.removeCallbacks(mCancelDimRefreshRateVoteRunnable);
+            mWasDisplayDimmed = false;
+            synchronized (mLock) {
+                mVotesStorage.updateGlobalVote(Vote.PRIORITY_SCREEN_DIM_REFRESH_RATE, null);
             }
 
             updateSensorStatus();
