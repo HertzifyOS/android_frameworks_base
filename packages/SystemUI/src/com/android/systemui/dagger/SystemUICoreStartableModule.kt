@@ -52,6 +52,7 @@ import com.android.systemui.mediaprojection.taskswitcher.MediaProjectionTaskSwit
 import com.android.systemui.shortcut.ShortcutKeyDispatcher
 import com.android.systemui.statusbar.ImmersiveModeConfirmation
 import com.android.systemui.statusbar.gesture.GesturePointerEventListener
+import com.android.systemui.hertzify.BatteryInfoNotificationController
 import com.android.systemui.statusbar.notification.InstantAppNotifier
 import com.android.systemui.statusbar.notification.headsup.StatusBarHeadsUpChangeListener
 import com.android.systemui.stylus.StylusUsiPowerStartable
@@ -336,4 +337,11 @@ abstract class SystemUICoreStartableModule {
     @IntoMap
     @ClassKey(KeyguardSmartspaceStartable::class)
     abstract fun bindKeyguardSmartspaceStartable(impl: KeyguardSmartspaceStartable): CoreStartable
+
+    @Binds
+    @IntoMap
+    @ClassKey(BatteryInfoNotificationController::class)
+    abstract fun bindBatteryInfoNotificationController(
+        impl: BatteryInfoNotificationController
+    ): CoreStartable
 }
