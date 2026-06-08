@@ -71,4 +71,9 @@
 
     <!-- Update battery info every second when device is charging -->
     <bool name="config_alternateFastchargeInfoUpdate">false</bool>
+
+   <!-- Sign applied to BATTERY_PROPERTY_CURRENT_NOW before unit conversion.
+         1  = kernel uses Android convention (positive = charging).
+         -1 = kernel inverts the sign (positive = discharging). -->
+    <integer name="config_batteryCurrentNowSign" translatable="false">1</integer>
 </resources>
