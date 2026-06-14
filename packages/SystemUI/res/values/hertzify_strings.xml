@@ -300,6 +300,7 @@
     <string name="dynamic_bar_cam_short">Cam</string>
     <string name="dynamic_bar_mic_short">Mic</string>
     <string name="dynamic_bar_recent_apps">Recent Apps</string>
+    <string name="dynamic_bar_kill_app">Kill app</string>
     <string name="dynamic_bar_count_running"><xliff:g id="count" example="3">%d</xliff:g> running</string>
     <string name="dynamic_bar_sports_vs">vs</string>
     <string name="dynamic_bar_sports_live">LIVE</string>
