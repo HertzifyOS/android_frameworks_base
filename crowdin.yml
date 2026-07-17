@@ -4,3 +4,5 @@ files:
     translation: /%original_path%-%android_code%/%original_file_name%
   - source: /**/values/smartspace_strings.xml
     translation: /%original_path%-%android_code%/%original_file_name%
+  - source: /packages/AppDataBackup/res/values/strings.xml
+    translation: /packages/AppDataBackup/res/values-%android_code%/strings.xml
