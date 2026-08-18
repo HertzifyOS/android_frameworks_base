@@ -204,4 +204,7 @@
     <!-- Per-app volume -->
     <string name="app_volume">App volume</string>
     <string name="no_playing_apps">No applications are playing audio</string>
+
+    <!-- Label for UI element which writes a clipboard-only screenshot to storage [CHAR LIMIT=30] -->
+    <string name="screenshot_save_to_storage_label">Save to storage</string>
 </resources>
