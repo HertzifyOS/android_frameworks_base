@@ -35,6 +35,7 @@ import com.android.systemui.statusbar.phone.SystemUIDialogFactory
 import com.android.systemui.statusbar.phone.createBottomSheet
 import com.android.systemui.utils.coroutines.flow.conflatedCallbackFlow
 import com.android.systemui.volume.VolumePanelDialogManager
+import com.android.systemui.volume.dialog.appvolume.ui.AppVolumePanelDialogManager
 import com.android.systemui.volume.dialog.domain.interactor.ExpandedAudioTileDetailsFeatureInteractor
 import com.android.systemui.volume.domain.model.VolumePanelRoute
 import com.android.systemui.volume.panel.domain.interactor.VolumePanelGlobalStateInteractor
@@ -59,6 +60,7 @@ constructor(
     @Application private val applicationScope: CoroutineScope,
     @Main private val mainContext: CoroutineContext,
     private val volumePanelDialogManager: VolumePanelDialogManager,
+    private val appVolumePanelDialogManager: AppVolumePanelDialogManager,
     private val activityStarter: ActivityStarter,
     private val viewModelFactory: VolumePanelViewModel.Factory,
     private val dialogFactory: SystemUIDialogFactory,
@@ -98,10 +100,7 @@ constructor(
             VolumePanelRoute.SYSTEM_UI_VOLUME_PANEL ->
                 volumePanelDialogManager.create(aboveStatusBar = true, view = null)
             VolumePanelRoute.APP_VOLUME_PANEL ->
-                activityStarter.startActivity(
-                    /* intent= */ Intent(Settings.Panel.ACTION_APP_VOLUME),
-                    /* dismissShade= */ true
-                )
+                appVolumePanelDialogManager.create(aboveStatusBar = true)
         }
     }
 
