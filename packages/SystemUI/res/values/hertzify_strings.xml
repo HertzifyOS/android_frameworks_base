@@ -200,4 +200,8 @@
     <string name="flashlight_strength_title">Flashlight Strength</string>
     <string name="flashlight_strength_turn_off">Turn off</string>
     <string name="flashlight_strength_turn_on">Turn on</string>
+
+    <!-- Per-app volume -->
+    <string name="app_volume">App volume</string>
+    <string name="no_playing_apps">No applications are playing audio</string>
 </resources>
