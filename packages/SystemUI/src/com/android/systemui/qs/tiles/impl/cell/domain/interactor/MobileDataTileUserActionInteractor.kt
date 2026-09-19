@@ -80,7 +80,13 @@ constructor(
 
     suspend fun handleSecondaryClick(expandable: Expandable?) {
         val activeRepo = getDataRepo() ?: return
-        activeRepo.setDataEnabled(!activeRepo.dataEnabled.value)
+        // If mobile data is disabled, show a confirmation dialog to turn it on.
+        if (!activeRepo.dataEnabled.value) {
+            withContext(mainDispatcher) { showEnableConfirmationDialog(expandable) }
+        } else {
+            // Otherwise, just turn it off without a dialog.
+            activeRepo.setDataEnabled(false)
+        }
     }
 
     private fun showEnableConfirmationDialog(expandable: Expandable?) {
