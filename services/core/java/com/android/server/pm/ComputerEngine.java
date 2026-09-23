@@ -144,6 +144,7 @@ import com.android.internal.util.CollectionUtils;
 import com.android.internal.util.IndentingPrintWriter;
 import com.android.internal.util.Preconditions;
 import com.android.modules.utils.TypedXmlSerializer;
+import com.android.internal.util.hertzify.AppShieldUtils;
 import com.android.server.LocalManagerRegistry;
 import com.android.server.ondeviceintelligence.OnDeviceIntelligenceManagerLocal;
 import com.android.server.pm.parsing.PackageInfoUtils;
@@ -2432,6 +2433,17 @@ public class ComputerEngine implements Computer {
         return UserHandle.getAppId(uid) == pkg.getUid();
     }
 
+    private boolean isAppShieldExempt(int callingUid, int userId) {
+        if (isSystemOrRootOrShell(callingUid) || callingUid == android.os.Process.PHONE_UID) {
+            return true;
+        }
+        final String home = getDefaultHome(userId);
+        if (home != null && isCallerSameApp(home, callingUid)) {
+            return true;
+        }
+        return false;
+    }
+
     private boolean isCallerFromManagedUserOrProfile(@UserIdInt int userId) {
         final var dpmi = mInjector.getLocalService(DevicePolicyManagerInternal.class);
         return dpmi != null && dpmi.isUserOrganizationManaged(userId);
@@ -2675,6 +2687,42 @@ public class ComputerEngine implements Computer {
             int callingUid, @Nullable ComponentName component,
             @PackageManager.ComponentType int componentType, int userId, boolean filterUninstall,
             boolean filterArchived) {
+        if (ps != null && !isCallerSameApp(ps.getPackageName(), callingUid)) {
+            String targetPkg = ps.getPackageName();
+            
+            if (AppShieldUtils.isHiddenFromLauncher(mContext.getContentResolver(), targetPkg)) {
+                String home = getDefaultHome(userId);
+                if (home != null) {
+                    String[] callerPkgs = getPackagesForUid(callingUid);
+                    if (callerPkgs != null) {
+                        for (String callerPkg : callerPkgs) {
+                            if (home.equals(callerPkg)) {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (!isAppShieldExempt(callingUid, userId) 
+                    && AppShieldUtils.isAppHidden(mContext.getContentResolver(), targetPkg)) {
+                return true;
+            }
+
+            if (AppShieldUtils.isDetached(mContext.getContentResolver(), targetPkg)) {
+                String[] callerPkgs = getPackagesForUid(callingUid);
+                if (callerPkgs != null) {
+                    for (String callerPkg : callerPkgs) {
+                        if ("com.android.vending".equals(callerPkg)) {
+                            if (AppShieldUtils.isDetached(mContext.getContentResolver(), targetPkg)) {
+                                return true;
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         if (Process.isSdkSandboxUid(callingUid)) {
             int clientAppUid = Process.getAppUidForSdkSandboxUid(callingUid);
             // SDK sandbox should be able to see it's client app
@@ -5279,6 +5327,11 @@ public class ComputerEngine implements Computer {
         }
 
         InstallSource installSource = ps.getInstallSource();
+
+        if (AppShieldUtils.isDetached(mContext.getContentResolver(), packageName)) {
+            return InstallSource.EMPTY;
+        }
+        
         final String installerPackageName = installSource.mInstallerPackageName;
         if (installSource != null && installerPackageName != null
                 && mSettings.getPackage(PLAY_STORE) != null

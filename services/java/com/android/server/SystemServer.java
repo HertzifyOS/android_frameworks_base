@@ -44,9 +44,11 @@ import android.app.SystemServiceRegistry;
 import android.app.admin.DevicePolicySafetyChecker;
 import android.app.appfunctions.AppFunctionManagerConfiguration;
 import android.app.usage.UsageStatsManagerInternal;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageItemInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManagerInternal;
@@ -109,6 +111,7 @@ import com.android.internal.R;
 import com.android.internal.annotations.GuardedBy;
 import com.android.internal.notification.SystemNotificationChannels;
 import com.android.internal.os.ApplicationSharedMemory;
+import com.android.internal.os.BackgroundThread;
 import com.android.internal.os.BinderInternal;
 import com.android.internal.os.RuntimeInit;
 import com.android.internal.os.logging.MetricsLoggerWrapper;
@@ -120,6 +123,7 @@ import com.android.internal.protolog.WmProtoLogGroups;
 import com.android.internal.util.ConcurrentUtils;
 import com.android.internal.util.EmergencyAffordanceManager;
 import com.android.internal.util.FrameworkStatsLog;
+import com.android.internal.util.hertzify.AppShieldUtils;
 import com.android.internal.widget.ILockSettings;
 import com.android.server.accessibility.AccessibilityManagerService;
 import com.android.server.accounts.AccountManagerService;
@@ -3696,6 +3700,26 @@ public final class SystemServer implements Dumpable {
         } catch (Throwable e) {
             reportWtf("starting System UI", e);
         }
+        t.traceEnd();
+
+        t.traceBegin("AppShieldInit");
+        AppShieldUtils.ensureObserver(mSystemContext.getContentResolver());
+
+        IntentFilter appShieldFilter = new IntentFilter(Intent.ACTION_PACKAGE_FULLY_REMOVED);
+        appShieldFilter.addDataScheme("package");
+        mSystemContext.registerReceiverAsUser(
+                new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        if (intent.getData() == null) return;
+                        String pkg = intent.getData().getSchemeSpecificPart();
+                        if (pkg != null) {
+                            AppShieldUtils.removeAllForPackage(
+                                    context.getContentResolver(), pkg);
+                        }
+                    }
+                },
+                UserHandle.ALL, appShieldFilter, null, BackgroundThread.getHandler());
         t.traceEnd();
 
         t.traceEnd(); // startOtherServices

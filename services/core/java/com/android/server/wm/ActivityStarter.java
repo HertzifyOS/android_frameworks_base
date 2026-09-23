@@ -111,6 +111,7 @@ import android.app.WindowConfiguration.WindowingMode;
 import android.app.compat.CompatChanges;
 import android.compat.annotation.ChangeId;
 import android.compat.annotation.Overridable;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.IIntentSender;
 import android.content.Intent;
@@ -143,6 +144,8 @@ import com.android.internal.app.HeavyWeightSwitcherActivity;
 import com.android.internal.app.IVoiceInteractor;
 import com.android.internal.protolog.ProtoLog;
 import com.android.internal.util.FrameworkStatsLog;
+import com.android.internal.util.hertzify.AppShieldUtils;
+import com.android.server.LocalServices;
 import com.android.server.UiThread;
 import com.android.server.am.ActivityManagerService.IntentCreatorToken;
 import com.android.server.am.PendingIntentRecord;
@@ -832,6 +835,25 @@ class ActivityStarter {
                 || (mStartActivity != null && packageName.equals(mStartActivity.packageName));
     }
 
+    private boolean isAppShieldCallerExempt(String callerPkg, int callerUid) {
+        if (callerUid == android.os.Process.SYSTEM_UID || callerUid == android.os.Process.ROOT_UID) {
+            return true;
+        }
+        final PackageManagerInternal pmi = LocalServices.getService(PackageManagerInternal.class);
+        if (pmi == null) return false;
+
+        final int userId = UserHandle.getUserId(callerUid);
+
+        final ApplicationInfo ai = pmi.getApplicationInfo(
+                callerPkg, 0, android.os.Process.SYSTEM_UID, userId);
+        if (ai != null && (ai.isSystemApp() || ai.isUpdatedSystemApp())) {
+            return true;
+        }
+
+        final ComponentName homeComponent = pmi.getDefaultHomeActivity(userId);
+        return homeComponent != null && callerPkg.equals(homeComponent.getPackageName());
+    }
+
     /**
      * Resolve necessary information according the request parameters provided earlier, and execute
      * the request which begin the journey of starting an activity.
@@ -907,6 +929,17 @@ class ActivityStarter {
 
                 final long origId = Binder.clearCallingIdentity();
                 try {
+                    if (mRequest.activityInfo != null && mRequest.activityInfo.packageName != null) {
+                        String targetPkg = mRequest.activityInfo.packageName;
+                        String callerPkg = mRequest.callingPackage;
+                        if (callerPkg != null && !targetPkg.equals(callerPkg)) {
+                            if (AppShieldUtils.isAppHidden(
+                                            mService.mContext.getContentResolver(), targetPkg)
+                                    && !isAppShieldCallerExempt(callerPkg, mRequest.callingUid)) {
+                                return ActivityManager.START_CLASS_NOT_FOUND;
+                            }
+                        }
+                    }
                     res = resolveToHeavyWeightSwitcherIfNeeded();
                     if (res != START_SUCCESS) {
                         return res;

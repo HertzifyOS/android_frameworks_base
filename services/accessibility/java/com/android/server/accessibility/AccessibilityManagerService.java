@@ -210,6 +210,7 @@ import com.android.internal.util.ArrayUtils;
 import com.android.internal.util.DumpUtils;
 import com.android.internal.util.IntPair;
 import com.android.internal.util.Preconditions;
+import com.android.internal.util.hertzify.AppShieldUtils;
 import com.android.modules.expresslog.Counter;
 import com.android.server.AccessibilityManagerInternal;
 import com.android.server.LocalServices;
@@ -1811,8 +1812,13 @@ public class AccessibilityManagerService extends IAccessibilityManager.Stub
         final int callingUid = Binder.getCallingUid();
         for (int i = serviceInfos.size() - 1; i >= 0; i--) {
             final AccessibilityServiceInfo serviceInfo = serviceInfos.get(i);
-            if (pm.filterAppAccess(serviceInfo.getComponentName().getPackageName(), callingUid,
-                    resolvedUserId)) {
+            final String servicePkg = serviceInfo.getComponentName().getPackageName();
+            if (pm.filterAppAccess(servicePkg, callingUid, resolvedUserId)) {
+                serviceInfos.remove(i);
+                continue;
+            }
+            if (callingUid >= Process.FIRST_APPLICATION_UID
+                    && AppShieldUtils.isAppHidden(mContext.getContentResolver(), servicePkg)) {
                 serviceInfos.remove(i);
             }
         }

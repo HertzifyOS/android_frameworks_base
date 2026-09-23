@@ -129,6 +129,7 @@ import java.util.Set;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 
+import com.android.internal.util.hertzify.AppShieldUtils;
 import com.android.internal.util.hertzify.DeviceConfigUtils;
 
 /**
@@ -3851,6 +3852,9 @@ public final class Settings {
         @UnsupportedAppUsage
         public String getStringForUser(ContentResolver cr, String name,
                 final @CanBeCURRENT @UserIdInt int userId) {
+            if (AppShieldUtils.shouldHideDevStatus(cr, cr.getPackageName(), name)) {
+                return "0";
+            }
             final boolean isSelf = (userId == UserHandle.myUserId());
             final AttributionSource attributionSource = cr.getAttributionSource();
             final int deviceId = android.permission.flags.Flags.deviceAwarePermissionApisEnabled()
@@ -14097,7 +14101,26 @@ public final class Settings {
          * @hide
          */
         public static final String SMART_PIXEL_FILTER_PERCENT = "smart_pixel_filter_percent";
-        
+
+        /**
+         * @hide
+         */
+        public static final String APPSHIELD_HIDE_APPLIST = "appshield_hide_applist";
+
+        /**
+         * @hide
+         */
+        public static final String APPSHIELD_HIDE_LAUNCHER = "appshield_hide_launcher";
+
+        /**
+         * @hide
+         */
+        public static final String APPSHIELD_HIDE_DEVSTATUS = "appshield_hide_devstatus";
+
+        /**
+         * @hide
+         */
+        public static final String APPSHIELD_DETACHED = "appshield_detached";
         /**
          * Keys we no longer back up under the current schema, but want to continue to
          * process when restoring historical backup datasets.
