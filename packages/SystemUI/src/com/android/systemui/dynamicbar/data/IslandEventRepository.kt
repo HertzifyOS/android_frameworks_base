@@ -1,5 +1,7 @@
 package com.android.systemui.dynamicbar.data
 
+import android.app.Notification
+import android.service.notification.StatusBarNotification
 import android.util.Log
 import com.android.systemui.dynamicbar.data.source.AospChipIslandManager
 import com.android.systemui.dynamicbar.data.source.AppTrackingIslandManager
@@ -36,6 +38,14 @@ constructor(
 ) {
     companion object {
         private const val TAG = "IslandEventRepository"
+
+        private fun StatusBarNotification.isMediaNotification(): Boolean {
+            val extras = notification?.extras ?: return false
+            if (extras.containsKey(Notification.EXTRA_MEDIA_SESSION)) return true
+            val template = extras.getString(Notification.EXTRA_TEMPLATE) ?: return false
+            return template.endsWith("MediaStyle") ||
+                template.endsWith("DecoratedMediaCustomViewStyle")
+        }
     }
 
     @Volatile private var listenersStarted = false
@@ -211,7 +221,8 @@ constructor(
                 }
             val promotedFiltered =
                 promoted.filterNot {
-                    it is IslandEvent.PromotedOngoing && it.sbn.key in aosp.notificationKeys
+                    it is IslandEvent.PromotedOngoing &&
+                        (it.sbn.key in aosp.notificationKeys || it.sbn.isMediaNotification())
                 }
             high + transientFiltered + promotedFiltered + indication + aosp.events
         }
