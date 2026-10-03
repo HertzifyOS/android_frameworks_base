@@ -598,7 +598,11 @@ public class ComputerEngine implements Computer {
                                 && shouldFilterApplication(
                                 getPackageStateInternal(ai.applicationInfo.packageName,
                                         Process.SYSTEM_UID), filterCallingUid, userId);
-                if (!blockInstantResolution && !blockNormalResolution) {
+                final boolean blockHiddenRomResolution = !isCallerInstantApp
+                        && AppsFilterBase.shouldHideFromUid(
+                                this, filterCallingUid, comp.getPackageName());
+                if (!blockInstantResolution && !blockNormalResolution
+                        && !blockHiddenRomResolution) {
                     final ResolveInfo ri = new ResolveInfo();
                     ri.activityInfo = ai;
                     ri.userHandle = UserHandle.of(userId);
@@ -814,8 +818,10 @@ public class ComputerEngine implements Computer {
             final PackageStateInternal setting =
                     getPackageStateInternal(pkgName, Process.SYSTEM_UID);
 
-            if (setting != null && setting.getAndroidPackage() != null && (resolveForStart
-                    || !shouldFilterApplication(setting, filterCallingUid, userId))) {
+            if (setting != null && setting.getAndroidPackage() != null
+                    && ((resolveForStart && !AppsFilterBase.shouldHideFromUid(
+                                    this, filterCallingUid, pkgName))
+                            || !shouldFilterApplication(setting, filterCallingUid, userId))) {
                 final List<ResolveInfo> queryResult = mComponentResolver.queryActivities(this,
                         intent, resolvedType, flags, setting.getAndroidPackage().getActivities(),
                         userId);
@@ -1248,6 +1254,11 @@ public class ComputerEngine implements Computer {
         final boolean blockInstant = intent.isWebIntent() && areWebInstantAppsDisabled(userId);
         for (int i = resolveInfos.size() - 1; i >= 0; i--) {
             final ResolveInfo info = resolveInfos.get(i);
+            if (info.activityInfo != null && AppsFilterBase.shouldHideFromUid(
+                    this, filterCallingUid, info.activityInfo.packageName)) {
+                resolveInfos.remove(i);
+                continue;
+            }
             // remove locally resolved instant app web results when disabled
             if (info.isInstantAppAvailable && blockInstant) {
                 resolveInfos.remove(i);
@@ -5843,8 +5854,10 @@ public class ComputerEngine implements Computer {
     @Override
     public String[] getSharedUserPackagesForPackage(@NonNull String packageName,
             @UserIdInt int userId) {
+        final int callingUid = Binder.getCallingUid();
         final PackageStateInternal packageSetting = mSettings.getPackage(packageName);
-        if (packageSetting == null || mSettings.getSharedUserFromPackageName(packageName) == null) {
+        if (packageSetting == null || mSettings.getSharedUserFromPackageName(packageName) == null
+                || shouldFilterApplicationIncludingUninstalled(packageSetting, callingUid, userId)) {
             return EmptyArray.STRING;
         }
 
@@ -5855,7 +5868,8 @@ public class ComputerEngine implements Computer {
         int i = 0;
         for (int index = 0; index < numPackages; index++) {
             final PackageStateInternal ps = packages.valueAt(index);
-            if (ps.getUserStateOrDefault(userId).isInstalled()) {
+            if (ps.getUserStateOrDefault(userId).isInstalled()
+                    && !shouldFilterApplication(ps, callingUid, userId)) {
                 res[i++] = ps.getPackageName();
             }
         }
