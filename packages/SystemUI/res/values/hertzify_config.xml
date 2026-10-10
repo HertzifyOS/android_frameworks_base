@@ -85,4 +85,7 @@
 
     <!-- Whether to disable Smart Pixels on UDFPS -->
     <bool name="config_disableSmartPixelsOnUDFPS">false</bool>
+
+    <!-- Whether to force notifications to take up the full width of the screen in landscape -->
+    <bool name="config_fullWidthNotificationsInLandscape">false</bool>
 </resources>
